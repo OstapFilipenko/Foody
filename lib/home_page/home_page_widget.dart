@@ -47,10 +47,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
           backgroundColor: Color(0x00FFFFFF),
           automaticallyImplyLeading: false,
           flexibleSpace: Align(
-            alignment: Alignment(0, 0),
-            child: SizedBox.expand(
-              child: SvgPicture.asset(
-                'assets/images/headerS.svg',
+            alignment: Alignment(0.05, 0),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitWidth,
+                  image: Image.asset(
+                    'assets/images/header.png',
+                  ).image,
+                ),
+                shape: BoxShape.rectangle,
               ),
             ),
           ),
