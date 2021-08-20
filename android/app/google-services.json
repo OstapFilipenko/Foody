@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "611302254878",
+    "firebase_url": "https://foodtracker-bda8f-default-rtdb.firebaseio.com",
+    "project_id": "foodtracker-bda8f",
+    "storage_bucket": "foodtracker-bda8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611302254878:android:c81401afb0260abd7e410f",
+        "android_client_info": {
+          "package_name": "com.flutterflow.foody"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611302254878-6lhb0719cu63131j71l81trerpko2e1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUm679Bolhv131L1kMP_uqAdTR3zpQZhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611302254878-6lhb0719cu63131j71l81trerpko2e1l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "611302254878-me1o48ce23459rrp8ikhd0bcsuugqm7u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterflow.foody"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
