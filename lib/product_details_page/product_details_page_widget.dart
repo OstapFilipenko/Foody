@@ -1,3 +1,5 @@
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -54,30 +56,30 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
       child: Scaffold(
         key: scaffoldKey,
         appBar: PreferredSize(
-          preferredSize:
-              Size.fromHeight(MediaQuery.of(context).size.height * 0.085),
-          child: AppBar(
-            backgroundColor: Color(0x00FFFFFF),
-            automaticallyImplyLeading: false,
-            flexibleSpace: Align(
-              alignment: Alignment(0, 0),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 1,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.none,
-                    image: Image.asset(
-                      'assets/images/Gruppe maskieren 5.svg',
-                    ).image,
+            preferredSize:
+                Size.fromHeight(MediaQuery.of(context).size.height * 0.12),
+            child: AppBar(
+              backgroundColor: Color(0x00FFFFFF),
+              automaticallyImplyLeading: false,
+              flexibleSpace: Align(
+                alignment: Alignment(0.05, 0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 1,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      image: Svg(
+                        'assets/images/headerS.svg',
+                      ),
+                    ),
+                    shape: BoxShape.rectangle,
                   ),
                 ),
               ),
-            ),
-            actions: [],
-            elevation: 0,
-          ),
-        ),
+              actions: [],
+              elevation: 0,
+            )),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             await Navigator.push(
