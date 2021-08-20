@@ -5,7 +5,7 @@ import '../product_details_page/product_details_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 
 class HomePageWidget extends StatefulWidget {
   HomePageWidget({Key key}) : super(key: key);
@@ -42,7 +42,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
       key: scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.085),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.14),
         child: AppBar(
           backgroundColor: Color(0x00FFFFFF),
           automaticallyImplyLeading: false,
@@ -54,9 +54,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
-                  image: Image.asset(
-                    'assets/images/header.png',
-                  ).image,
+                  image: Svg(
+                    'assets/images/headerS.svg',
+                  ),
                 ),
                 shape: BoxShape.rectangle,
               ),
