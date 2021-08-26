@@ -1,5 +1,6 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:foody/backend/localDatabase.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -32,6 +33,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
       slideOffset: Offset(5, 0),
     ),
   };
+  final db = LocalDatabase();
 
   @override
   void initState() {
@@ -48,6 +50,42 @@ class _SettingsWidgetState extends State<SettingsWidget>
     proteinController = TextEditingController();
     sugarController = TextEditingController();
     weightController = TextEditingController();
+
+    db.queryKcal().then((double kcal) {
+      setState(() {
+        kcalController.text = kcal.toString();
+      });
+    });
+    
+    db.queryFats().then((double fats) {
+      setState(() {
+        fatsController.text = fats.toString();
+      });
+    });
+
+    db.queryCarbohydrates().then((double carbohydrates) {
+      setState(() {
+        carbohydratesController.text = carbohydrates.toString();
+      });
+    });
+
+    db.queryProtein().then((double protein) {
+      setState(() {
+        proteinController.text = protein.toString();
+      });
+    });
+
+    db.querySugar().then((double sugar) {
+      setState(() {
+        sugarController.text = sugar.toString();
+      });
+    });
+
+    db.queryWeightStarted().then((double weightStarted) {
+      setState(() {
+        weightController.text = weightStarted.toString();
+      });
+    });
   }
 
   @override
@@ -411,6 +449,12 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               if (!formKey.currentState.validate()) {
                                 return;
                               }
+                              await db.updateKcal(double.parse(kcalController.text));
+                              await db.updateFats(double.parse(fatsController.text));
+                              await db.updateCarbohydrates(double.parse(carbohydratesController.text));
+                              await db.updateProtein(double.parse(proteinController.text));
+                              await db.updateSugar(double.parse(sugarController.text));
+                              await db.updateWeightStarted(double.parse(weightController.text));
                             },
                             child: Text(
                               "Save",

@@ -35,6 +35,7 @@ dependencies:
   flutter_svg_provider: ^0.1.10
   intl:
   sqflite:
+  path:
   json_serializable: ^4.0.1
   page_transition:
   timeago:
