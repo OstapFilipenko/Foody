@@ -41,21 +41,21 @@ class LocalDatabase {
           CREATE TABLE $consumedTableName (
             $c_id int NOT NULL AUTO_INCREMENT,
             $c_productID VARCHAR(255) NOT NULL,
-            $c_gramm FLOAT NOT NULL,
+            $c_gramm DOUBLE NOT NULL,
             $c_eatenAt VARCHAR(255) NOT NULL,
             PRIMARY KEY ($c_id)
           );
           CREATE TABLE $settingsTableName (
             $s_name varchar(255) NOT NULL,
-            $s_value FLOAT NOT NULL,
+            $s_value DOUBLE NOT NULL,
             PRIMARY KEY ($s_value)
           );
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES (kcal, 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES (fats, 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES (carbohydrates, 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES (protein, 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES (sugar, 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES (weightStarted, 0.0);
+          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('kcal', 0.0);
+          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('fats', 0.0);
+          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('carbohydrates', 0.0);
+          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('protein', 0.0);
+          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('sugar', 0.0);
+          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('weightStarted', 0.0);
 
           ''');
   }
@@ -65,5 +65,47 @@ class LocalDatabase {
     return await db.insert(consumedTableName, row);
   }
   
+  Future<void> updateKcal(double kcal) async {
+    Database db = await instance.database;
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $kcal WHERE $s_name = 'kcal';
+    ''');
+  }
+
+  Future<void> updateFats(double fats) async {
+    Database db = await instance.database;
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $fats WHERE $s_name = 'fats';
+    ''');
+  }
+
+  Future<void> updateCarbohydrates(double carbohydrates) async {
+    Database db = await instance.database;
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $carbohydrates WHERE $s_name = 'carbohydrates';
+    ''');
+  }
+
+  Future<void> updateProtein(double protein) async {
+    Database db = await instance.database;
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $protein WHERE $s_name = 'protein';
+    ''');
+  }
+
+  Future<void> updateSugar(double sugar) async {
+    Database db = await instance.database;
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $sugar WHERE $s_name = 'sugar';
+    ''');
+  }
+
+  Future<void> updateWeightStarted(double weightStarted) async {
+    Database db = await instance.database;
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $weightStarted WHERE $s_name = 'weightStarted';
+    ''');
+  }
+
 
 }
