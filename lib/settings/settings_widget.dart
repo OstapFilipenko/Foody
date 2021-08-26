@@ -51,6 +51,8 @@ class _SettingsWidgetState extends State<SettingsWidget>
     sugarController = TextEditingController();
     weightController = TextEditingController();
 
+
+    //loading the values from the db to show them in the textfield
     db.queryKcal().then((double kcal) {
       setState(() {
         kcalController.text = kcal.toString();
@@ -449,6 +451,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               if (!formKey.currentState.validate()) {
                                 return;
                               }
+                              //Updating the values in the local db
                               await db.updateKcal(double.parse(kcalController.text));
                               await db.updateFats(double.parse(fatsController.text));
                               await db.updateCarbohydrates(double.parse(carbohydratesController.text));
