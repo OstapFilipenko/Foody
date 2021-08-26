@@ -34,8 +34,8 @@ class ProductConsumed{
   }
 
   @override
-    String toString() {
-      return super.toString();
-    }
+  String toString() {
+    return super.toString();
+  }
 
 }
