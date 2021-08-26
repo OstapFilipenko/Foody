@@ -30,6 +30,7 @@ class LocalDatabase {
     return _database;
   }
 
+  //initialization
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
@@ -37,6 +38,7 @@ class LocalDatabase {
         version: _databaseVersion, onCreate: _onCreate);
   }
 
+  //Create the tables on app build
   Future _onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $consumedTableName (
@@ -61,11 +63,69 @@ class LocalDatabase {
           ''');
   }
 
+  //Add a consumed product
   Future<int> insertConsumedProduct(Map<String, dynamic> row) async {
     Database db = await instance.database;
     return await db.insert(consumedTableName, row);
   }
   
+  //Get all consumed products at XXX
+  Future<List<ProductConsumed>> queryAllProductsByDate(String date) async {
+    Database db = await instance.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $consumedTableName WHERE $c_eatenAt = '$date';");
+
+    return List.generate(maps.length, (index) {
+      return new ProductConsumed(
+        productID: maps[index][c_productID],
+        eatenAt: maps[index][c_eatenAt],
+        gramm: maps[index][c_gramm],
+      );
+    });
+  }
+
+  //Get the value of field kcal
+  Future<double> queryKcal() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'kcal';");
+    return result.isNotEmpty ? double.parse(result[0]['val']) : Null;
+  }
+
+  //Get the value of field fats
+  Future<double> queryFats() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'fats';");
+    return result.isNotEmpty ? double.parse(result[0]['val']) : Null;
+  }
+
+  //Get the value of field carbohydrates
+  Future<double> queryCarbohydrates() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'carbohydrates';");
+    return result.isNotEmpty ? double.parse(result[0]['val']) : Null;
+  }
+
+  //Get the value of field protein
+  Future<double> queryProtein() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'protein';");
+    return result.isNotEmpty ? double.parse(result[0]['val']) : Null;
+  }
+
+  //Get the value of field sugar
+  Future<double> querySugar() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'sugar';");
+    return result.isNotEmpty ? double.parse(result[0]['val']) : Null;
+  }
+
+  //Get the value of field weightStarted
+  Future<double> queryWeightStarted() async {
+    Database db = await instance.database;
+    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'weightStarted';");
+    return result.isNotEmpty ? double.parse(result[0]['val']) : Null;
+  }
+
+  //Update the value of field kcal
   Future<void> updateKcal(double kcal) async {
     Database db = await instance.database;
     await db.execute('''
@@ -73,6 +133,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Update the value of field fats
   Future<void> updateFats(double fats) async {
     Database db = await instance.database;
     await db.execute('''
@@ -80,6 +141,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Update the value of field carbohydrates
   Future<void> updateCarbohydrates(double carbohydrates) async {
     Database db = await instance.database;
     await db.execute('''
@@ -87,6 +149,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Update the value of field protein
   Future<void> updateProtein(double protein) async {
     Database db = await instance.database;
     await db.execute('''
@@ -94,6 +157,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Update the value of field sugar
   Future<void> updateSugar(double sugar) async {
     Database db = await instance.database;
     await db.execute('''
@@ -101,6 +165,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Update the value of field weightStarted
   Future<void> updateWeightStarted(double weightStarted) async {
     Database db = await instance.database;
     await db.execute('''
@@ -108,6 +173,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Update the product that has been consumed, the only one value that can be updated is gramm (the amount in gramm)
   Future<void> updateConsumedProduct(ProductConsumed productConsumed) async {
     Database db = await instance.database;
     int gramm = productConsumed.getGramm();
@@ -118,6 +184,7 @@ class LocalDatabase {
     ''');
   }
 
+  //Delete the product that has been consumed
   Future<void> deleteConsumedProduct(ProductConsumed productConsumed) async {
     Database db = await instance.database;
     String eatenAt = productConsumed.getEatenAt();

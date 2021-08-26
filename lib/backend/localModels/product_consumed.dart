@@ -1,13 +1,14 @@
 class ProductConsumed{
   final String productID;
+  //Date -> 28.06.2021 <- this format
   final String eatenAt;
   int gramm;
   
-  ProductConsumed(
+  ProductConsumed({
     this.productID,
     this.eatenAt,
-    this.gramm
-  );
+    this.gramm,
+  });
 
   String getProductID(){
     return this.productID;
