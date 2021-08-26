@@ -18,6 +18,7 @@ class LocalDatabase {
   static final s_value = "Value";
 
 
+  //initializing the db by creating tables and inserting start values to the settings
   Future<Database> database() async {
     return openDatabase(
       join(await getDatabasesPath(), 'todo.db'),
@@ -52,32 +53,6 @@ class LocalDatabase {
       },
       version: 1,
     );
-  }
-  
-  //Create the tables on app build
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-          CREATE TABLE $consumedTableName (
-            $c_productID VARCHAR(255) NOT NULL,
-            $c_gramm INTEGER NOT NULL,
-            $c_eatenAt VARCHAR(255) NOT NULL,
-            CONSTRAINT ID PRIMARY KEY ($c_productID, $c_eatenAt)
-          );
-
-          CREATE TABLE $settingsTableName (
-            $s_name varchar(255) NOT NULL,
-            $s_value DOUBLE NOT NULL,
-            PRIMARY KEY ($s_value)
-          );
-
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('kcal', 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('fats', 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('carbohydrates', 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('protein', 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('sugar', 0.0);
-          INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('weightStarted', 0.0);
-
-          ''');
   }
 
   //Add a consumed product
