@@ -16,12 +16,12 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget>
     with TickerProviderStateMixin {
-  TextEditingController textController1;
-  TextEditingController textController2;
-  TextEditingController textController3;
-  TextEditingController textController4;
-  TextEditingController textController5;
-  TextEditingController textController6;
+  TextEditingController kcalController;
+  TextEditingController fatsController;
+  TextEditingController carbohydratesController;
+  TextEditingController proteinController;
+  TextEditingController sugarController;
+  TextEditingController weightController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -42,12 +42,12 @@ class _SettingsWidgetState extends State<SettingsWidget>
       this,
     );
 
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
-    textController3 = TextEditingController();
-    textController4 = TextEditingController();
-    textController5 = TextEditingController();
-    textController6 = TextEditingController();
+    kcalController = TextEditingController();
+    fatsController = TextEditingController();
+    carbohydratesController = TextEditingController();
+    proteinController = TextEditingController();
+    sugarController = TextEditingController();
+    weightController = TextEditingController();
   }
 
   @override
@@ -119,7 +119,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController1,
+                                controller: kcalController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Amount kcal / day',
@@ -169,7 +169,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController2,
+                                controller: fatsController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Amount fats / day',
@@ -219,10 +219,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController3,
+                                controller: carbohydratesController,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Amount carbohid. / day',
+                                  labelText: 'Amount carbohyd. / day',
                                   labelStyle:
                                       FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
@@ -269,10 +269,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController4,
+                                controller: proteinController,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Amount protein. / day',
+                                  labelText: 'Amount protein / day',
                                   labelStyle:
                                       FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
@@ -319,7 +319,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController5,
+                                controller: sugarController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Amount sugar / day',
@@ -369,7 +369,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController6,
+                                controller: weightController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Weight started',
