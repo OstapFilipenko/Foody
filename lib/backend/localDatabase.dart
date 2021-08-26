@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,9 +40,9 @@ class LocalDatabase {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $consumedTableName (
-            $c_id int NOT NULL AUTO_INCREMENT,
+            $c_id INT NOT NULL AUTOINCREMENT,
             $c_productID VARCHAR(255) NOT NULL,
-            $c_gramm DOUBLE NOT NULL,
+            $c_gramm INT NOT NULL,
             $c_eatenAt VARCHAR(255) NOT NULL,
             PRIMARY KEY ($c_id)
           );
@@ -107,5 +108,14 @@ class LocalDatabase {
     ''');
   }
 
+  Future<void> updateConsumedProduct(ProductConsumed productConsumed) async {
+    Database db = await instance.database;
+    int gramm = productConsumed.getGramm();
+    String eatenAt = productConsumed.getEatenAt();
+    String productID = productConsumed.getProductID();
+    await db.execute('''
+      UPDATE $consumedTableName SET $c_gramm = $gramm WHERE $c_eatenAt = '$eatenAt' AND $c_productID = '$productID'
+    ''');
+  }
 
 }
