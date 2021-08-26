@@ -126,5 +126,4 @@ class LocalDatabase {
       DELETE FROM $consumedTableName WHERE $c_eatenAt = '$eatenAt' AND $c_productID = '$productID'
     ''');
   }
-
 }

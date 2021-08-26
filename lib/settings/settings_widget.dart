@@ -1,4 +1,5 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -401,6 +402,23 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 },
                               ),
                             ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (!formKey.currentState.validate()) {
+                                return;
+                              }
+                            },
+                            child: Text(
+                              "Save",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 21),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                shape: StadiumBorder()),
                           ),
                         )
                       ],
