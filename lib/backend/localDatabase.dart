@@ -118,4 +118,13 @@ class LocalDatabase {
     ''');
   }
 
+  Future<void> deleteConsumedProduct(ProductConsumed productConsumed) async {
+    Database db = await instance.database;
+    String eatenAt = productConsumed.getEatenAt();
+    String productID = productConsumed.getProductID();
+    await db.execute('''
+      DELETE FROM $consumedTableName WHERE $c_eatenAt = '$eatenAt' AND $c_productID = '$productID'
+    ''');
+  }
+
 }
