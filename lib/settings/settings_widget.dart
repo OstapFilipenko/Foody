@@ -1,4 +1,6 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:foody/backend/localDatabase.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -15,12 +17,12 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget>
     with TickerProviderStateMixin {
-  TextEditingController textController1;
-  TextEditingController textController2;
-  TextEditingController textController3;
-  TextEditingController textController4;
-  TextEditingController textController5;
-  TextEditingController textController6;
+  TextEditingController kcalController;
+  TextEditingController fatsController;
+  TextEditingController carbohydratesController;
+  TextEditingController proteinController;
+  TextEditingController sugarController;
+  TextEditingController weightController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -31,6 +33,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
       slideOffset: Offset(5, 0),
     ),
   };
+  final db = LocalDatabase();
 
   @override
   void initState() {
@@ -41,12 +44,50 @@ class _SettingsWidgetState extends State<SettingsWidget>
       this,
     );
 
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
-    textController3 = TextEditingController();
-    textController4 = TextEditingController();
-    textController5 = TextEditingController();
-    textController6 = TextEditingController();
+    kcalController = TextEditingController();
+    fatsController = TextEditingController();
+    carbohydratesController = TextEditingController();
+    proteinController = TextEditingController();
+    sugarController = TextEditingController();
+    weightController = TextEditingController();
+
+
+    //loading the values from the db to show them in the textfield
+    db.queryKcal().then((double kcal) {
+      setState(() {
+        kcalController.text = kcal.toString();
+      });
+    });
+    
+    db.queryFats().then((double fats) {
+      setState(() {
+        fatsController.text = fats.toString();
+      });
+    });
+
+    db.queryCarbohydrates().then((double carbohydrates) {
+      setState(() {
+        carbohydratesController.text = carbohydrates.toString();
+      });
+    });
+
+    db.queryProtein().then((double protein) {
+      setState(() {
+        proteinController.text = protein.toString();
+      });
+    });
+
+    db.querySugar().then((double sugar) {
+      setState(() {
+        sugarController.text = sugar.toString();
+      });
+    });
+
+    db.queryWeightStarted().then((double weightStarted) {
+      setState(() {
+        weightController.text = weightStarted.toString();
+      });
+    });
   }
 
   @override
@@ -118,7 +159,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController1,
+                                controller: kcalController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Amount kcal / day',
@@ -168,7 +209,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController2,
+                                controller: fatsController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Amount fats / day',
@@ -218,10 +259,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController3,
+                                controller: carbohydratesController,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Amount carbohid. / day',
+                                  labelText: 'Amount carbohyd. / day',
                                   labelStyle:
                                       FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
@@ -268,10 +309,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController4,
+                                controller: proteinController,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Amount protein. / day',
+                                  labelText: 'Amount protein / day',
                                   labelStyle:
                                       FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
@@ -318,7 +359,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController5,
+                                controller: sugarController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Amount sugar / day',
@@ -368,7 +409,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: TextFormField(
-                                controller: textController6,
+                                controller: weightController,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Weight started',
@@ -401,6 +442,30 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 },
                               ),
                             ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (!formKey.currentState.validate()) {
+                                return;
+                              }
+                              //Updating the values in the local db
+                              await db.updateKcal(double.parse(kcalController.text));
+                              await db.updateFats(double.parse(fatsController.text));
+                              await db.updateCarbohydrates(double.parse(carbohydratesController.text));
+                              await db.updateProtein(double.parse(proteinController.text));
+                              await db.updateSugar(double.parse(sugarController.text));
+                              await db.updateWeightStarted(double.parse(weightController.text));
+                            },
+                            child: Text(
+                              "Save",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 21),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                shape: StadiumBorder()),
                           ),
                         )
                       ],
