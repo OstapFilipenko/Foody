@@ -9,7 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProductDetailsPageWidget extends StatefulWidget {
-  ProductDetailsPageWidget({Key key}) : super(key: key);
+  final String barcode;
+  ProductDetailsPageWidget({Key key, this.barcode});
 
   @override
   _ProductDetailsPageWidgetState createState() =>
@@ -113,7 +114,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                 Align(
                   alignment: Alignment(0, -0.9),
                   child: Text(
-                    '[Productname]',
+                    widget.barcode,
                     style: FlutterFlowTheme.title1.override(
                       fontFamily: 'Poppins',
                     ),
