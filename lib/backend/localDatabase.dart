@@ -62,6 +62,7 @@ class LocalDatabase {
   }
   
   //Get all consumed products at XXX
+  //TODO get only date from the product (there is the time as well, need to filter it)
   Future<List<ProductConsumed>> queryAllProductsByDate(String date) async {
     Database db = await database();
     final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $consumedTableName WHERE $c_eatenAt = '$date';");
