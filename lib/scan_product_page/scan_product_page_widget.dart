@@ -117,7 +117,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               type: PageTransitionType.rightToLeft,
               duration: Duration(milliseconds: 300),
               reverseDuration: Duration(milliseconds: 300),
-              child: ProductDetailsPageWidget(barcode: await findBarcode()),
+              child: ProductDetailsPageWidget(docID: await findBarcode()),
             ),
           );
         },

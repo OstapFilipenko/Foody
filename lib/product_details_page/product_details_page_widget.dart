@@ -10,8 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProductDetailsPageWidget extends StatefulWidget {
-  final String barcode;
-  ProductDetailsPageWidget({Key key, this.barcode});
+  final String docID;
+  ProductDetailsPageWidget({Key key, this.docID});
 
   @override
   _ProductDetailsPageWidgetState createState() =>
@@ -61,7 +61,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
 
   void getInfos() async {
     _productsRecord = ProductsRecord.collection
-        .doc(widget.barcode)
+        .doc(widget.docID)
         .get()
         .then((DocumentSnapshot snapshot) {
       setState(() {
