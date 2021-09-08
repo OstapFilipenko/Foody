@@ -117,9 +117,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: ListView(
             children: [
               Align(
                 alignment: Alignment(0, -0.9),
