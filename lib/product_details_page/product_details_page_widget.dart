@@ -1,4 +1,5 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:foody/backend/backend.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -22,6 +23,14 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
   TextEditingController textController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  var _productsRecord;
+  String _productName = "[NAME]";
+  String _productCals = "[CALS]";
+  String _productFats = "[FATS]";
+  String _productCarbs = "[CARBS]";
+  String _productProtein = "[PROTEIN]";
+  
+  
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -47,6 +56,23 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
     );
 
     textController = TextEditingController();
+    getInfos();
+  }
+
+  void getInfos() async {
+    _productsRecord = ProductsRecord.collection
+        .doc(widget.barcode)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      setState(() {
+        _productName = snapshot.get("name");
+        _productCals = snapshot.get("calories").toString();
+        _productFats = snapshot.get("fats").toString();
+        _productCarbs = snapshot.get("carbohydrates").toString();
+        _productProtein = snapshot.get("protein").toString();
+
+      });
+    });
   }
 
   @override
@@ -114,7 +140,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                 Align(
                   alignment: Alignment(0, -0.9),
                   child: Text(
-                    widget.barcode,
+                    _productName,
                     style: FlutterFlowTheme.title1.override(
                       fontFamily: 'Poppins',
                     ),
@@ -163,7 +189,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        '[CALS]',
+                                        _productCals,
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -185,7 +211,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        '[FATS]',
+                                        _productFats,
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -207,7 +233,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        '[CARBS]',
+                                        _productCarbs,
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -229,7 +255,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        '[PROTEIN]',
+                                        _productProtein,
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
