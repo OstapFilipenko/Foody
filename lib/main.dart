@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foody/home_page/home_page_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:foody/scan_product_page/scan_product_page_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'home_page/home_page_widget.dart';
 import 'settings/settings_widget.dart';
@@ -48,6 +49,7 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'HomePage': HomePageWidget(),
+      'Add': ScanProductPageWidget(),
       'Settings': SettingsWidget(),
     };
     return Scaffold(
@@ -61,6 +63,14 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24,
             ),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+              color: Color(0xFF9E9E9E),
+              size: 24,
+            ),
+            label: 'Add',
           ),
           BottomNavigationBarItem(
             icon: Icon(
