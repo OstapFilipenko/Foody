@@ -111,6 +111,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
+          //TODO add if the barcode doesnt exist popUp with "this barcode doesnt exist"
           await Navigator.push(
             context,
             PageTransition(

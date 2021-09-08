@@ -21,7 +21,7 @@ class LocalDatabase {
   //initializing the db by creating tables and inserting start values to the settings
   Future<Database> database() async {
     return openDatabase(
-      join(await getDatabasesPath(), 'todo.db'),
+      join(await getDatabasesPath(), _databaseName),
       onCreate: (db, version) async {
         await db.execute(
           '''

@@ -1,6 +1,6 @@
 class ProductConsumed{
   final String productID;
-  //Date -> 28.06.2021 <- this format
+  //Date -> yyyy-MM-dd hh:mm:ss
   final String eatenAt;
   int gramm;
   

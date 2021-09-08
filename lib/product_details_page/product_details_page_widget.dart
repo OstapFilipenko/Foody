@@ -1,5 +1,8 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/backend.dart';
+import 'package:foody/backend/localDatabase.dart';
+import 'package:foody/backend/localModels/product_consumed.dart';
+import 'package:intl/intl.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -20,17 +23,19 @@ class ProductDetailsPageWidget extends StatefulWidget {
 
 class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
     with TickerProviderStateMixin {
-  TextEditingController textController;
+  TextEditingController gramController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final db = LocalDatabase();
+
   var _productsRecord;
   String _productName = "[NAME]";
   String _productCals = "[CALS]";
   String _productFats = "[FATS]";
   String _productCarbs = "[CARBS]";
   String _productProtein = "[PROTEIN]";
-  
-  
+
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -55,7 +60,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
       this,
     );
 
-    textController = TextEditingController();
+    gramController = TextEditingController();
     getInfos();
   }
 
@@ -70,9 +75,12 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
         _productFats = snapshot.get("fats").toString();
         _productCarbs = snapshot.get("carbohydrates").toString();
         _productProtein = snapshot.get("protein").toString();
-
       });
     });
+  }
+
+  Future<void> insertConsumedProduct(ProductConsumed productConsumed) async {
+    await db.insertConsumedProduct(productConsumed.toMap());
   }
 
   @override
@@ -109,6 +117,11 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
             )),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
+            await insertConsumedProduct(ProductConsumed(
+              productID: widget.docID,
+              eatenAt: DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()),
+              gramm: int.parse(gramController.text),
+            ));
             await Navigator.push(
               context,
               PageTransition(
@@ -297,7 +310,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: TextFormField(
-                        controller: textController,
+                        controller: gramController,
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Enter amount (in g)',
