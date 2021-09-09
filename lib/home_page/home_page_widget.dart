@@ -30,6 +30,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   };
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
+  List<ProductConsumed> consumedFoodToday;
 
   List<String> entries = ['1', '2', '3', '4', '5'];
 
@@ -50,7 +51,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     print("Today: " + today);
     await db.queryAllProductsByDate(today).then((List<ProductConsumed> consumedProducts){
       consumedProducts.forEach((element) {
-        print(element.productID + "++++++++++");
+        consumedFoodToday.add(element);
       });
     });
   }
