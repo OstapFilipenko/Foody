@@ -166,7 +166,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                       scanAreaScale: .7,
                       scanLineColor: Colors.green.shade400,
                       onCapture: (data) {
-                        // do something
+                        barcodeController.text = data;
                       },
                     ),
                   ),
