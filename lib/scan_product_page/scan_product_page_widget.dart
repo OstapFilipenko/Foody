@@ -1,4 +1,6 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import '../backend/backend.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -18,8 +20,9 @@ class ScanProductPageWidget extends StatefulWidget {
 
 class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     with TickerProviderStateMixin {
-  TextEditingController textController;
+  TextEditingController barcodeController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String barcode = "";
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -58,7 +61,22 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
       this,
     );
 
-    textController = TextEditingController();
+    barcodeController = TextEditingController();
+  }
+
+  Future<String> findBarcode() async {
+    String idOfPruduct;
+    QuerySnapshot<Map<String, dynamic>> snapshot = await ProductsRecord
+        .collection.where("barcode", isEqualTo: int.parse(barcodeController.text)).get();
+
+    List<QueryDocumentSnapshot> docs = snapshot.docs;
+    for (var doc in docs) {
+      if (doc.data() != null) {
+        idOfPruduct = doc.id;
+      }
+    }
+
+    return idOfPruduct;
   }
 
   @override
@@ -92,14 +110,15 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
+        onPressed: () async{
+          //TODO add if the barcode doesnt exist popUp with "this barcode doesnt exist"
           await Navigator.push(
             context,
             PageTransition(
               type: PageTransitionType.rightToLeft,
               duration: Duration(milliseconds: 300),
               reverseDuration: Duration(milliseconds: 300),
-              child: ProductDetailsPageWidget(),
+              child: ProductDetailsPageWidget(docID: await findBarcode()),
             ),
           );
         },
@@ -158,7 +177,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                     child: Align(
                       alignment: Alignment(0, 0),
                       child: TextFormField(
-                        controller: textController,
+                        controller: barcodeController,
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Barcode Number',
@@ -169,15 +188,19 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                           focusedBorder: InputBorder.none,
                           filled: true,
                           contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          prefixIcon: FaIcon(
-                            FontAwesomeIcons.barcode,
-                            color: Colors.black,
-                            size: 24,
-                          ),
                         ),
                         style: FlutterFlowTheme.bodyText1.override(
                           fontFamily: 'Poppins',
                         ),
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return 'Please enter a barcode number';
+                          }
+                          if (val.length < 1) {
+                            return 'Requires at least 1 characters.';
+                          }
+                          return null;
+                        },
                         textAlign: TextAlign.start,
                         maxLines: 1,
                       ),
