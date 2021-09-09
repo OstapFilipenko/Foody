@@ -25,6 +25,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
   TextEditingController barcodeController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String barcode = "";
+
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -55,7 +56,6 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
   };
 
   ScanController controller = ScanController();
-  String qrcode = 'Unknown';
 
   @override
   void initState() {
@@ -69,11 +69,11 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     barcodeController = TextEditingController();
   }
 
-  Future<String> findBarcode() async {
+  Future<String> findBarcode(String barcode) async {
     String idOfPruduct;
     QuerySnapshot<Map<String, dynamic>> snapshot = await ProductsRecord
         .collection
-        .where("barcode", isEqualTo: int.parse(barcodeController.text))
+        .where("barcode", isEqualTo: int.parse(barcode))
         .get();
 
     List<QueryDocumentSnapshot> docs = snapshot.docs;
@@ -125,7 +125,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               type: PageTransitionType.rightToLeft,
               duration: Duration(milliseconds: 300),
               reverseDuration: Duration(milliseconds: 300),
-              child: ProductDetailsPageWidget(docID: await findBarcode()),
+              child: ProductDetailsPageWidget(
+                  docID: await findBarcode(barcodeController.text)),
             ),
           );
         },
@@ -165,8 +166,17 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                       controller: controller,
                       scanAreaScale: .7,
                       scanLineColor: Colors.green.shade400,
-                      onCapture: (data) {
-                        barcodeController.text = data;
+                      onCapture: (data) async {
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: ProductDetailsPageWidget(
+                                docID: await findBarcode(data)),
+                          ),
+                        );
                       },
                     ),
                   ),
