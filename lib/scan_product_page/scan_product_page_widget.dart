@@ -163,14 +163,13 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                     height: 250,
                     child: ScanView(
                       controller: controller,
-// custom scan area, if set to 1.0, will scan full area
                       scanAreaScale: .7,
                       scanLineColor: Colors.green.shade400,
                       onCapture: (data) {
                         // do something
                       },
                     ),
-                  ).animated([animationsMap['containerOnPageLoadAnimation1']]),
+                  ),
                 ),
               ),
               Padding(
