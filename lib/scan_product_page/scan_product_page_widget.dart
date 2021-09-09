@@ -160,12 +160,13 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Container(
-                    width: 250, // custom wrap size
-                    height: 250,
+                    width:
+                        MediaQuery.of(context).size.width, // custom wrap size
+                    height: 300,
                     child: ScanView(
                       controller: controller,
-                      scanAreaScale: .7,
-                      scanLineColor: Colors.green.shade400,
+                      scanAreaScale: .9,
+                      scanLineColor: FlutterFlowTheme.primaryColor,
                       onCapture: (data) async {
                         await Navigator.push(
                           context,
