@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:scan/scan.dart';
 
 class ScanProductPageWidget extends StatefulWidget {
   ScanProductPageWidget({Key key}) : super(key: key);
@@ -23,6 +25,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
   TextEditingController barcodeController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String barcode = "";
+
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -52,6 +55,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     ),
   };
 
+  ScanController controller = ScanController();
+
   @override
   void initState() {
     super.initState();
@@ -64,10 +69,12 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     barcodeController = TextEditingController();
   }
 
-  Future<String> findBarcode() async {
+  Future<String> findBarcode(String barcode) async {
     String idOfPruduct;
     QuerySnapshot<Map<String, dynamic>> snapshot = await ProductsRecord
-        .collection.where("barcode", isEqualTo: int.parse(barcodeController.text)).get();
+        .collection
+        .where("barcode", isEqualTo: int.parse(barcode))
+        .get();
 
     List<QueryDocumentSnapshot> docs = snapshot.docs;
     for (var doc in docs) {
@@ -110,7 +117,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        onPressed: () async {
           //TODO add if the barcode doesnt exist popUp with "this barcode doesnt exist"
           await Navigator.push(
             context,
@@ -118,7 +125,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               type: PageTransitionType.rightToLeft,
               duration: Duration(milliseconds: 300),
               reverseDuration: Duration(milliseconds: 300),
-              child: ProductDetailsPageWidget(docID: await findBarcode()),
+              child: ProductDetailsPageWidget(
+                  docID: await findBarcode(barcodeController.text)),
             ),
           );
         },
@@ -152,12 +160,27 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFEEEEEE),
+                    width:
+                        MediaQuery.of(context).size.width, // custom wrap size
+                    height: 300,
+                    child: ScanView(
+                      controller: controller,
+                      scanAreaScale: .9,
+                      scanLineColor: FlutterFlowTheme.primaryColor,
+                      onCapture: (data) async {
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: ProductDetailsPageWidget(
+                                docID: await findBarcode(data)),
+                          ),
+                        );
+                      },
                     ),
-                  ).animated([animationsMap['containerOnPageLoadAnimation1']]),
+                  ),
                 ),
               ),
               Padding(

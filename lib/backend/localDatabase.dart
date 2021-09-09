@@ -17,7 +17,6 @@ class LocalDatabase {
   static final s_name = "Name";
   static final s_value = "Value";
 
-
   //initializing the db by creating tables and inserting start values to the settings
   Future<Database> database() async {
     return openDatabase(
@@ -42,12 +41,18 @@ class LocalDatabase {
           )
           ''',
         );
-        await db.execute('''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('kcal', 0.0)''');
-        await db.execute('''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('fats', 0.0)''');
-        await db.execute('''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('carbohydrates', 0.0)''');
-        await db.execute('''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('protein', 0.0)''');
-        await db.execute('''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('sugar', 0.0)''');
-        await db.execute('''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('weightStarted', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('kcal', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('fats', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('carbohydrates', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('protein', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('sugar', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('weightStarted', 0.0)''');
 
         return db;
       },
@@ -60,12 +65,15 @@ class LocalDatabase {
     Database db = await database();
     return await db.insert(consumedTableName, row);
   }
-  
+
   //Get all consumed products at XXX
   //TODO get only date from the product (there is the time as well, need to filter it)
   Future<List<ProductConsumed>> queryAllProductsByDate(String date) async {
     Database db = await database();
-    final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $consumedTableName WHERE $c_eatenAt LIKE '%"+ date + "%';");
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        "SELECT * FROM $consumedTableName WHERE $c_eatenAt LIKE '%" +
+            date +
+            "%';");
 
     return List.generate(maps.length, (index) {
       return new ProductConsumed(
@@ -79,7 +87,8 @@ class LocalDatabase {
   //Get all consumed products
   Future<List<ProductConsumed>> queryAllProducts() async {
     Database db = await database();
-    final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $consumedTableName;");
+    final List<Map<String, dynamic>> maps =
+        await db.rawQuery("SELECT * FROM $consumedTableName;");
 
     return List.generate(maps.length, (index) {
       return new ProductConsumed(
@@ -93,42 +102,48 @@ class LocalDatabase {
   //Get the value of field kcal
   Future<double> queryKcal() async {
     Database db = await database();
-    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'kcal';");
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'kcal';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
 
   //Get the value of field fats
   Future<double> queryFats() async {
     Database db = await database();
-    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'fats';");
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'fats';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
 
   //Get the value of field carbohydrates
   Future<double> queryCarbohydrates() async {
     Database db = await database();
-    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'carbohydrates';");
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'carbohydrates';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
 
   //Get the value of field protein
   Future<double> queryProtein() async {
     Database db = await database();
-    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'protein';");
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'protein';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
 
   //Get the value of field sugar
   Future<double> querySugar() async {
     Database db = await database();
-    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'sugar';");
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'sugar';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
 
   //Get the value of field weightStarted
   Future<double> queryWeightStarted() async {
     Database db = await database();
-    var result = await db.rawQuery("SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'weightStarted';");
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'weightStarted';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
 

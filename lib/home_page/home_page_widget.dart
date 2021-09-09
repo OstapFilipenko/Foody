@@ -30,7 +30,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   };
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
-  List<ProductConsumed> consumedFoodToday;
+  List<ProductConsumed> consumedFoodToday = [];
 
   List<String> entries = ['1', '2', '3', '4', '5'];
 
@@ -49,7 +49,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     String today = now.split(" ")[0];
     print("Today: " + today);
-    await db.queryAllProductsByDate(today).then((List<ProductConsumed> consumedProducts){
+    await db
+        .queryAllProductsByDate(today)
+        .then((List<ProductConsumed> consumedProducts) {
       consumedProducts.forEach((element) {
         consumedFoodToday.add(element);
       });

@@ -49,7 +49,6 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'HomePage': HomePageWidget(),
-      'Add': ScanProductPageWidget(),
       'Settings': SettingsWidget(),
     };
     return Scaffold(
@@ -63,14 +62,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24,
             ),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add,
-              color: Color(0xFF9E9E9E),
-              size: 24,
-            ),
-            label: 'Add',
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -93,6 +84,14 @@ class _NavBarPageState extends State<NavBarPage> {
         unselectedLabelStyle: const TextStyle(fontSize: 0.001),
         type: BottomNavigationBarType.fixed,
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ScanProductPageWidget()));
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
