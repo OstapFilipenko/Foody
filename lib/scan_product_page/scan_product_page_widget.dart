@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,6 +54,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     ),
   };
 
+  String _scanBarcode = 'Unknown';
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +71,9 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
   Future<String> findBarcode() async {
     String idOfPruduct;
     QuerySnapshot<Map<String, dynamic>> snapshot = await ProductsRecord
-        .collection.where("barcode", isEqualTo: int.parse(barcodeController.text)).get();
+        .collection
+        .where("barcode", isEqualTo: int.parse(barcodeController.text))
+        .get();
 
     List<QueryDocumentSnapshot> docs = snapshot.docs;
     for (var doc in docs) {
@@ -77,6 +83,27 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     }
 
     return idOfPruduct;
+  }
+
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   @override
@@ -110,7 +137,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        onPressed: () async {
           //TODO add if the barcode doesnt exist popUp with "this barcode doesnt exist"
           await Navigator.push(
             context,
@@ -157,6 +184,10 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                     decoration: BoxDecoration(
                       color: Color(0xFFEEEEEE),
                     ),
+                    child: ElevatedButton.icon(
+                        onPressed: () => scanBarcodeNormal(),
+                        icon: Icon(Icons.camera),
+                        label: Text('Scan')),
                   ).animated([animationsMap['containerOnPageLoadAnimation1']]),
                 ),
               ),
