@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:scan/scan.dart';
 
 class ScanProductPageWidget extends StatefulWidget {
   ScanProductPageWidget({Key key}) : super(key: key);
@@ -54,7 +54,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     ),
   };
 
-  String _scanBarcode = 'Unknown';
+  ScanController controller = ScanController();
+  String qrcode = 'Unknown';
 
   @override
   void initState() {
@@ -83,27 +84,6 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     }
 
     return idOfPruduct;
-  }
-
-  Future<void> scanBarcodeNormal() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      print(barcodeScanRes);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
   }
 
   @override
@@ -179,15 +159,17 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFEEEEEE),
+                    width: 250, // custom wrap size
+                    height: 250,
+                    child: ScanView(
+                      controller: controller,
+// custom scan area, if set to 1.0, will scan full area
+                      scanAreaScale: .7,
+                      scanLineColor: Colors.green.shade400,
+                      onCapture: (data) {
+                        // do something
+                      },
                     ),
-                    child: ElevatedButton.icon(
-                        onPressed: () => scanBarcodeNormal(),
-                        icon: Icon(Icons.camera),
-                        label: Text('Scan')),
                   ).animated([animationsMap['containerOnPageLoadAnimation1']]),
                 ),
               ),
