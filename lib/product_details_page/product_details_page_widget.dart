@@ -160,18 +160,18 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                   ).animated([animationsMap['textOnPageLoadAnimation']]),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Material(
                     color: Colors.transparent,
                     elevation: 5,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.15,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Align(
                         alignment: Alignment(0, 0),
@@ -192,7 +192,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
@@ -292,7 +292,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                   )
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
