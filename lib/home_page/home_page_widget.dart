@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
+import 'package:foody/backend/schema/products_record.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
@@ -31,8 +33,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
   List<ProductConsumed> consumedFoodToday = [];
-
-  List<String> entries = ['1', '2', '3', '4', '5'];
+  List<ProductsRecord> productsToday = [];
 
   @override
   void initState() {
@@ -42,10 +43,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
-    getAllConsumed();
   }
 
-  void getAllConsumed() async {
+  getAllConsumed() async {
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     String today = now.split(" ")[0];
     print("Today: " + today);
@@ -56,6 +56,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
         consumedFoodToday.add(element);
       });
     });
+    return consumedFoodToday;
   }
 
   @override
@@ -269,49 +270,63 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 20,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.pushAndRemoveUntil(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  duration: Duration(milliseconds: 300),
-                                  reverseDuration: Duration(milliseconds: 300),
-                                  child: ProductDetailsPageWidget(),
+                  child: FutureBuilder(
+                    future: getAllConsumed(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: consumedFoodToday.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.pushAndRemoveUntil(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 300),
+                                      reverseDuration:
+                                          Duration(milliseconds: 300),
+                                      child: ProductDetailsPageWidget(),
+                                    ),
+                                    (r) => false,
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      consumedFoodToday[index].productID,
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      consumedFoodToday[index].gramm.toString(),
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                (r) => false,
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '[Food]',
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  '[kcal]',
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         );
-                      }),
+                      }
+                    },
+                  ),
                 ),
               ),
             )
