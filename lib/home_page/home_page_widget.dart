@@ -46,6 +46,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   }
 
   getAllConsumed() async {
+    consumedFoodToday.clear();
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     String today = now.split(" ")[0];
     print("Today: " + today);
@@ -53,11 +54,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
         .queryAllProductsByDate(today)
         .then((List<ProductConsumed> consumedProducts) {
       consumedProducts.forEach((element) {
-        consumedFoodToday.add(element);
+       var product =  ProductsRecord.collection
+        .doc(element.productID)
+        .get()
+        .then((DocumentSnapshot snapshot) {
+        productsToday.add(new ProductsRecord(snapshot.get("name")));
+    });
       });
     });
     return consumedFoodToday;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
