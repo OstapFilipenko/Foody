@@ -1,12 +1,9 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foody/backend/localDatabase.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SettingsWidget extends StatefulWidget {
   SettingsWidget({Key key}) : super(key: key);
