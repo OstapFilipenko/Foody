@@ -46,14 +46,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
   }
 
   Future<List<ProductFirestore>> getAllConsumed() async {
+    productsToday.clear();
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     String today = now.split(" ")[0];
     print("Today: " + today);
     await db
         .queryAllProductsByDate(today)
-        .then((List<ProductConsumed> consumedProducts) {
-      consumedProducts.forEach((element) {
-        ProductsRecord.collection
+        .then((List<ProductConsumed> consumedProducts) async {
+      for (ProductConsumed element in consumedProducts) {
+        await ProductsRecord.collection
             .doc(element.productID)
             .get()
             .then((DocumentSnapshot snapshot) {
@@ -70,7 +71,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
             ),
           );
         });
-      });
+      }
     });
     return productsToday;
   }
@@ -286,59 +287,91 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: FutureBuilder(
+                  child: FutureBuilder<List<ProductFirestore>>(
                     future: getAllConsumed(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: productsToday.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: InkWell(
-                                onTap: () async {
-                                  await Navigator.pushAndRemoveUntil(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      duration: Duration(milliseconds: 300),
-                                      reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: ProductDetailsPageWidget(),
-                                    ),
-                                    (r) => false,
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      productsToday[index].name,
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
+                    builder: (context,
+                        AsyncSnapshot<List<ProductFirestore>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: productsToday.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                child: InkWell(
+                                  onTap: () async {
+                                    await Navigator.pushAndRemoveUntil(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        duration: Duration(milliseconds: 300),
+                                        reverseDuration:
+                                            Duration(milliseconds: 300),
+                                        child: ProductDetailsPageWidget(),
                                       ),
-                                    ),
-                                    Text(
-                                      productsToday[index].calories.toString() + " kcal",
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
+                                      (r) => false,
+                                    );
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        productsToday[index].name,
+                                        style:
+                                            FlutterFlowTheme.bodyText1.override(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    )
-                                  ],
+                                      Text(
+                                        productsToday[index]
+                                                .calories
+                                                .toString() +
+                                            " kcal",
+                                        style:
+                                            FlutterFlowTheme.bodyText1.override(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: Text(
+                              "No data",
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
                               ),
-                            );
-                          },
+                            ),
+                          );
+                        }
+                      } else {
+                        return Center(
+                          child: Text('State: ${snapshot.connectionState}'),
                         );
                       }
                     },
