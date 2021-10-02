@@ -208,6 +208,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                           fontFamily: 'Poppins',
                                           color: Color(0xFF509AF2),
                                           fontWeight: FontWeight.w600,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       Text(
@@ -215,7 +216,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 7,
+                                          fontSize: 10,
                                         ),
                                       )
                                     ],
@@ -230,6 +231,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                           fontFamily: 'Poppins',
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       Text(
@@ -237,7 +239,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 7,
+                                          fontSize: 10,
                                         ),
                                       )
                                     ],
@@ -252,6 +254,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                           fontFamily: 'Poppins',
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       Text(
@@ -259,7 +262,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 7,
+                                          fontSize: 10,
                                         ),
                                       )
                                     ],
@@ -274,6 +277,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                           fontFamily: 'Poppins',
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       Text(
@@ -281,7 +285,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 7,
+                                          fontSize: 10,
                                         ),
                                       )
                                     ],
