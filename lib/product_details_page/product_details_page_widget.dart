@@ -296,7 +296,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                       ),
                     ),
                   ),
-                ),
+                ).animated([animationsMap['textOnPageLoadAnimation']]),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Material(
@@ -344,7 +344,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                       ),
                     ),
                   ),
-                )
+                ).animated([animationsMap['textOnPageLoadAnimation']]),
               ],
             ),
           ),

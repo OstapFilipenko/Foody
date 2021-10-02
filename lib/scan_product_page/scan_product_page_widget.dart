@@ -225,7 +225,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                       ),
                     ),
                   ),
-                ).animated([animationsMap['containerOnPageLoadAnimation2']]),
+                ).animated([animationsMap['textOnPageLoadAnimation']]),
               )
             ],
           ),

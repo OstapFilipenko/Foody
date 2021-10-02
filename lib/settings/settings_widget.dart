@@ -190,7 +190,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               ),
                             ),
                           ),
-                        ),
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                           child: Material(
@@ -240,7 +240,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               ),
                             ),
                           ),
-                        ),
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                           child: Material(
@@ -290,7 +290,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               ),
                             ),
                           ),
-                        ),
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                           child: Material(
@@ -340,7 +340,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               ),
                             ),
                           ),
-                        ),
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                           child: Material(
@@ -390,7 +390,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               ),
                             ),
                           ),
-                        ),
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                           child: Material(
@@ -440,7 +440,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               ),
                             ),
                           ),
-                        ),
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                           child: ElevatedButton(
@@ -464,7 +464,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             style: ElevatedButton.styleFrom(
                                 shape: StadiumBorder()),
                           ),
-                        )
+                        ).animated([animationsMap['textOnPageLoadAnimation']]),
                       ],
                     ),
                   ),
