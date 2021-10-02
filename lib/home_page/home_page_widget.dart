@@ -32,6 +32,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
   List<ProductFirestore> productsToday = [];
+  String today;
 
   @override
   void initState() {
@@ -41,12 +42,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
       this,
     );
+    String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
+    today = now.split(" ")[0];
   }
 
   Future<List<ProductFirestore>> getAllConsumed() async {
     productsToday.clear();
-    String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
-    String today = now.split(" ")[0];
     print("Today: " + today);
     await db
         .queryAllProductsByDate(today)
@@ -121,7 +122,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   size: 30,
                 ),
                 Text(
-                  '[date]',
+                  today,
                   style: FlutterFlowTheme.bodyText1.override(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
@@ -133,7 +134,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   size: 30,
                 )
               ],
-            ),
+            ).animated([animationsMap['textOnPageLoadAnimation']]),
             Align(
               alignment: Alignment(0, -0.9),
               child: Text(
@@ -268,7 +269,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   ),
                 ),
               ),
-            ),
+            ).animated([animationsMap['textOnPageLoadAnimation']]),
             SizedBox(
               height: 35,
             ),
@@ -375,8 +376,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     },
                   ),
                 ),
-              ),
-            )
+              ).animated([animationsMap['textOnPageLoadAnimation']]),
+            ),
           ],
         ),
       ),
