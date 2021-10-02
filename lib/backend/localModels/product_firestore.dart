@@ -8,8 +8,8 @@ class ProductFirestore {
   double _protein;
   double _sugar;
 
-  ProductFirestore(barcode, name, calories, carbohydrates, description, fats,
-      protein, sugar) {
+  ProductFirestore(int barcode, String name, double calories, double carbohydrates, String description, double fats,
+      double protein, double sugar) {
     this._barcode = barcode;
     this._name = name;
     this._calories = calories;

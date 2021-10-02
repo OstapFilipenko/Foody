@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
+import 'package:foody/backend/localModels/product_firestore.dart';
 import 'package:foody/backend/schema/products_record.dart';
 import 'package:intl/intl.dart';
 
@@ -32,8 +33,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   };
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
-  List<ProductConsumed> consumedFoodToday = [];
-  List<ProductsRecord> productsToday = [];
+  List<ProductFirestore> productsToday = [];
 
   @override
   void initState() {
@@ -45,8 +45,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     );
   }
 
-  getAllConsumed() async {
-    consumedFoodToday.clear();
+  Future<List<ProductFirestore>> getAllConsumed() async {
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     String today = now.split(" ")[0];
     print("Today: " + today);
@@ -54,18 +53,27 @@ class _HomePageWidgetState extends State<HomePageWidget>
         .queryAllProductsByDate(today)
         .then((List<ProductConsumed> consumedProducts) {
       consumedProducts.forEach((element) {
-       var product =  ProductsRecord.collection
-        .doc(element.productID)
-        .get()
-        .then((DocumentSnapshot snapshot) {
-        productsToday.add(new ProductsRecord(snapshot.get("name")));
-    });
+        ProductsRecord.collection
+            .doc(element.productID)
+            .get()
+            .then((DocumentSnapshot snapshot) {
+          productsToday.add(
+            new ProductFirestore(
+              int.parse(snapshot.get("barcode").toString()),
+              snapshot.get("name").toString(),
+              double.parse(snapshot.get("calories").toString()),
+              double.parse(snapshot.get("carbohydrates").toString()),
+              snapshot.get("description").toString(),
+              double.parse(snapshot.get("fats").toString()),
+              double.parse(snapshot.get("protein").toString()),
+              double.parse(snapshot.get("sugar").toString()),
+            ),
+          );
+        });
       });
     });
-    return consumedFoodToday;
+    return productsToday;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +294,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
-                          itemCount: consumedFoodToday.length,
+                          itemCount: productsToday.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -311,7 +319,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      consumedFoodToday[index].productID,
+                                      productsToday[index].name,
                                       style:
                                           FlutterFlowTheme.bodyText1.override(
                                         fontFamily: 'Poppins',
@@ -319,7 +327,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ),
                                     ),
                                     Text(
-                                      consumedFoodToday[index].gramm.toString(),
+                                      productsToday[index].calories.toString() + " kcal",
                                       style:
                                           FlutterFlowTheme.bodyText1.override(
                                         fontFamily: 'Poppins',
