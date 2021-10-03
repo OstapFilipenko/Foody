@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
@@ -32,6 +34,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
   List<ProductFirestore> productsToday = [];
+  Map<String, List<ProductFirestore>> productsByDay = {};
   String today;
 
   @override
@@ -44,6 +47,59 @@ class _HomePageWidgetState extends State<HomePageWidget>
     );
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     today = now.split(" ")[0];
+  }
+
+  Future<Map<String, List<ProductFirestore>>> fillCalender() async {
+    productsByDay[today] = await getAllConsumed();
+    for (int i = 0; i <= 5; i++) {
+      String day = DateFormat("yyyy-MM-dd hh:mm:ss")
+          .format(DateTime.now().subtract(Duration(days: i)))
+          .split(" ")[0];
+      productsByDay[day] = await getAllConsumedByDate(day);
+    }
+    productsByDay.forEach((key, value) {
+      print(key + "------------------------------");
+    });
+    return productsByDay;
+  }
+
+  Future<List<ProductFirestore>> getAllConsumedByDate(
+      String dayOfConsumtion) async {
+    await db
+        .queryAllProductsByDate(dayOfConsumtion)
+        .then((List<ProductConsumed> consumedProducts) async {
+      for (ProductConsumed element in consumedProducts) {
+        await ProductsRecord.collection
+            .doc(element.productID)
+            .get()
+            .then((DocumentSnapshot snapshot) {
+          productsByDay[dayOfConsumtion] = [];
+          productsByDay[dayOfConsumtion].add(
+            new ProductFirestore(
+              int.parse(snapshot.get("barcode").toString()),
+              snapshot.get("name").toString(),
+              double.parse(snapshot.get("calories").toString()) *
+                  element.gramm /
+                  100,
+              double.parse(snapshot.get("carbohydrates").toString()) *
+                  element.gramm /
+                  100,
+              snapshot.get("description").toString(),
+              double.parse(snapshot.get("fats").toString()) *
+                  element.gramm /
+                  100,
+              double.parse(snapshot.get("protein").toString()) *
+                  element.gramm /
+                  100,
+              double.parse(snapshot.get("sugar").toString()) *
+                  element.gramm /
+                  100,
+            ),
+          );
+        });
+      }
+    });
+    return productsByDay[dayOfConsumtion];
   }
 
   Future<List<ProductFirestore>> getAllConsumed() async {
@@ -61,12 +117,22 @@ class _HomePageWidgetState extends State<HomePageWidget>
             new ProductFirestore(
               int.parse(snapshot.get("barcode").toString()),
               snapshot.get("name").toString(),
-              double.parse(snapshot.get("calories").toString()) * element.gramm/100,
-              double.parse(snapshot.get("carbohydrates").toString()) * element.gramm/100,
+              double.parse(snapshot.get("calories").toString()) *
+                  element.gramm /
+                  100,
+              double.parse(snapshot.get("carbohydrates").toString()) *
+                  element.gramm /
+                  100,
               snapshot.get("description").toString(),
-              double.parse(snapshot.get("fats").toString()) * element.gramm/100,
-              double.parse(snapshot.get("protein").toString()) * element.gramm/100,
-              double.parse(snapshot.get("sugar").toString()) * element.gramm/100,
+              double.parse(snapshot.get("fats").toString()) *
+                  element.gramm /
+                  100,
+              double.parse(snapshot.get("protein").toString()) *
+                  element.gramm /
+                  100,
+              double.parse(snapshot.get("sugar").toString()) *
+                  element.gramm /
+                  100,
             ),
           );
         });
@@ -106,292 +172,255 @@ class _HomePageWidgetState extends State<HomePageWidget>
         ),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(
-                  Icons.keyboard_arrow_left,
-                  color: Colors.black,
-                  size: 30,
-                ),
-                Text(
-                  today,
-                  style: FlutterFlowTheme.bodyText1.override(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Icon(
-                  Icons.keyboard_arrow_right,
-                  color: Colors.black,
-                  size: 30,
-                )
-              ],
-            ).animated([animationsMap['textOnPageLoadAnimation']]),
-            Align(
-              alignment: Alignment(0, -0.9),
-              child: Text(
-                'Activity',
-                style: FlutterFlowTheme.title1.override(
-                  fontFamily: 'Poppins',
-                ),
-              ).animated([animationsMap['textOnPageLoadAnimation']]),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-              child: Material(
-                color: Colors.transparent,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
+      body: FutureBuilder<Map<String, List<ProductFirestore>>>(
+        future: fillCalender(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
                     mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Column(
+                      Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                      Text(
+                        today,
+                        style: FlutterFlowTheme.bodyText1.override(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.black,
+                        size: 30,
+                      )
+                    ],
+                  ).animated([animationsMap['textOnPageLoadAnimation']]),
+                  Align(
+                    alignment: Alignment(0, -0.9),
+                    child: Text(
+                      'Activity',
+                      style: FlutterFlowTheme.title1.override(
+                        fontFamily: 'Poppins',
+                      ),
+                    ).animated([animationsMap['textOnPageLoadAnimation']]),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                    child: Material(
+                      color: Colors.transparent,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: EdgeInsets.fromLTRB(3, 3, 3, 3),
-                              child: Text(
-                                'Results of day',
-                                textAlign: TextAlign.start,
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(3, 3, 3, 3),
+                                    child: Text(
+                                      'Results of day',
+                                      textAlign: TextAlign.start,
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(3, 3, 3, 3),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Weight diffrence',
+                                              textAlign: TextAlign.start,
+                                              style: FlutterFlowTheme.bodyText1
+                                                  .override(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            Text(
+                                              '[-kg]',
+                                              style: FlutterFlowTheme.bodyText1
+                                                  .override(
+                                                fontFamily: 'Poppins',
+                                                color: Color(0xFF509AF2),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 3, 3, 3),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Tracking days',
+                                              textAlign: TextAlign.start,
+                                              style: FlutterFlowTheme.bodyText1
+                                                  .override(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            Text(
+                                              '[days]',
+                                              style: FlutterFlowTheme.bodyText1
+                                                  .override(
+                                                fontFamily: 'Poppins',
+                                                color: Color(0xFF509AF2),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(3, 3, 3, 3),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Weight diffrence',
-                                        textAlign: TextAlign.start,
-                                        style:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        '[-kg]',
-                                        style:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          color: Color(0xFF509AF2),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 3, 3, 3),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Tracking days',
-                                        textAlign: TextAlign.start,
-                                        style:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        '[days]',
-                                        style:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          color: Color(0xFF509AF2),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 70,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF509AF2),
+                                    ),
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 70,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF509AF2),
-                              ),
-                            )
-                          ],
+                    ),
+                  ).animated([animationsMap['textOnPageLoadAnimation']]),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  Expanded(
+                    child: Material(
+                      color: Colors.transparent,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ).animated([animationsMap['textOnPageLoadAnimation']]),
-            SizedBox(
-              height: 35,
-            ),
-            Expanded(
-              child: Material(
-                color: Colors.transparent,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: FutureBuilder<List<ProductFirestore>>(
-                    future: getAllConsumed(),
-                    builder: (context,
-                        AsyncSnapshot<List<ProductFirestore>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Icon(
-                              Icons.error_outline,
-                              color: Colors.red,
-                              size: 60,
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
-                          if (productsToday.isEmpty) {
-                            return Center(
-                              child: Text(
-                                "No data",
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: productsByDay[today].length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.pushAndRemoveUntil(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 300),
+                                      reverseDuration:
+                                          Duration(milliseconds: 300),
+                                      child: ProductDetailsPageWidget(),
+                                    ),
+                                    (r) => false,
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      productsByDay[today][index].name,
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      productsByDay[today][index].calories.toString() +
+                                          " kcal",
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
-                          } else {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: productsToday.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await Navigator.pushAndRemoveUntil(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          duration: Duration(milliseconds: 300),
-                                          reverseDuration:
-                                              Duration(milliseconds: 300),
-                                          child: ProductDetailsPageWidget(),
-                                        ),
-                                        (r) => false,
-                                      );
-                                    },
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          productsToday[index].name,
-                                          style: FlutterFlowTheme.bodyText1
-                                              .override(
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Text(
-                                          productsToday[index]
-                                                  .calories
-                                                  .toString() +
-                                              " kcal",
-                                          style: FlutterFlowTheme.bodyText1
-                                              .override(
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        } else {
-                          return Center(
-                            child: Text(
-                              "No data",
-                              style: FlutterFlowTheme.bodyText1.override(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          );
-                        }
-                      } else {
-                        return Center(
-                          child: Text('State: ${snapshot.connectionState}'),
-                        );
-                      }
-                    },
+                          },
+                        ),
+                      ),
+                    ).animated([animationsMap['textOnPageLoadAnimation']]),
                   ),
-                ),
-              ).animated([animationsMap['textOnPageLoadAnimation']]),
-            ),
-          ],
-        ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }
