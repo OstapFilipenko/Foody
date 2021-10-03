@@ -224,6 +224,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                       child: TextFormField(
                         controller: barcodeController,
                         obscureText: false,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Barcode Number',
                           labelStyle: FlutterFlowTheme.bodyText1.override(
