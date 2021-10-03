@@ -61,12 +61,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
             new ProductFirestore(
               int.parse(snapshot.get("barcode").toString()),
               snapshot.get("name").toString(),
-              double.parse(snapshot.get("calories").toString()),
-              double.parse(snapshot.get("carbohydrates").toString()),
+              double.parse(snapshot.get("calories").toString()) * element.gramm/100,
+              double.parse(snapshot.get("carbohydrates").toString()) * element.gramm/100,
               snapshot.get("description").toString(),
-              double.parse(snapshot.get("fats").toString()),
-              double.parse(snapshot.get("protein").toString()),
-              double.parse(snapshot.get("sugar").toString()),
+              double.parse(snapshot.get("fats").toString()) * element.gramm/100,
+              double.parse(snapshot.get("protein").toString()) * element.gramm/100,
+              double.parse(snapshot.get("sugar").toString()) * element.gramm/100,
             ),
           );
         });
