@@ -20,7 +20,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     with TickerProviderStateMixin {
   TextEditingController barcodeController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String barcode = "";
+  String barcodeStr = "";
 
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
@@ -72,6 +72,10 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
         .where("barcode", isEqualTo: int.parse(barcode))
         .get();
 
+    if (snapshot.docs.isEmpty) {
+      return null;
+    }
+
     List<QueryDocumentSnapshot> docs = snapshot.docs;
     for (var doc in docs) {
       if (doc.data() != null) {
@@ -80,6 +84,25 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     }
 
     return idOfPruduct;
+  }
+
+  showAlertDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      title: Text("No Product"),
+      content: Text("This product does not exist in our database :( "),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'OK'),
+          child: const Text('OK'),
+        ),
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -114,17 +137,20 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          //TODO add if the barcode doesnt exist popUp with "this barcode doesnt exist"
-          await Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.rightToLeft,
-              duration: Duration(milliseconds: 300),
-              reverseDuration: Duration(milliseconds: 300),
-              child: ProductDetailsPageWidget(
-                  docID: await findBarcode(barcodeController.text)),
-            ),
-          );
+          barcodeStr = await findBarcode(barcodeController.text);
+          if (barcodeStr != null) {
+            await Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.rightToLeft,
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                child: ProductDetailsPageWidget(docID: barcodeStr),
+              ),
+            );
+          } else {
+            showAlertDialog(context);
+          }
         },
         backgroundColor: Color(0xFFF0F0F0),
         elevation: 8,
