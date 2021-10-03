@@ -195,26 +195,28 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
-                          icon: Icon(
-                            Icons.keyboard_arrow_left,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            String day = DateFormat("yyyy-MM-dd hh:mm:ss")
-                                .format(DateTime.now()
-                                    .subtract(Duration(days: daysLoaded + 1)))
-                                .split(" ")[0];
-                            productsByDay[day] =
-                                await getAllConsumedByDate(day);
-                            dayMoveHelper++;
-                            setState(() {
+                        icon: Icon(
+                          Icons.keyboard_arrow_left,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          dayMoveHelper++;
+                          String day = DateFormat("yyyy-MM-dd hh:mm:ss")
+                              .format(DateTime.now()
+                                  .subtract(Duration(days: daysLoaded + 1)))
+                              .split(" ")[0];
+                          productsByDay[day] = await getAllConsumedByDate(day);
+                          setState(
+                            () {
                               currentDay = DateFormat("yyyy-MM-dd hh:mm:ss")
                                   .format(DateTime.now()
                                       .subtract(Duration(days: dayMoveHelper)))
                                   .split(" ")[0];
-                            });
-                          }),
+                            },
+                          );
+                        },
+                      ),
                       Text(
                         currentDay,
                         style: FlutterFlowTheme.bodyText1.override(
@@ -222,11 +224,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Colors.black,
-                        size: 30,
-                      )
+                      dayMoveHelper > 0 ? IconButton(
+                        icon: Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          dayMoveHelper--;
+                          setState(
+                            () {
+                              currentDay = DateFormat("yyyy-MM-dd hh:mm:ss")
+                                  .format(DateTime.now()
+                                      .subtract(Duration(days: dayMoveHelper)))
+                                  .split(" ")[0];
+                            },
+                          );
+                        },
+                      ) : Container(),
                     ],
                   ).animated([animationsMap['textOnPageLoadAnimation']]),
                   Align(
