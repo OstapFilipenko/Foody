@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class HomePageWidget extends StatefulWidget {
   HomePageWidget({Key key}) : super(key: key);
@@ -280,114 +281,36 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(3, 3, 3, 3),
-                                    child: Text(
-                                      'Results of day',
-                                      textAlign: TextAlign.start,
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(3, 3, 3, 3),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Weight diffrence',
-                                              textAlign: TextAlign.start,
-                                              style: FlutterFlowTheme.bodyText1
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            Text(
-                                              '[-kg]',
-                                              style: FlutterFlowTheme.bodyText1
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color(0xFF509AF2),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 3, 3, 3),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Tracking days',
-                                              textAlign: TextAlign.start,
-                                              style: FlutterFlowTheme.bodyText1
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            Text(
-                                              '[days]',
-                                              style: FlutterFlowTheme.bodyText1
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color(0xFF509AF2),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
+                            CircularPercentIndicator(
+                              radius: 60.0,
+                              lineWidth: 7.0,
+                              percent: 0.5,
+                              center: Text("100%"),
+                              progressColor: Color(0xFF509AF2),
                             ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 70,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF509AF2),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
+                            CircularPercentIndicator(
+                              radius: 60.0,
+                              lineWidth: 7.0,
+                              percent: 0.5,
+                              center: Text("100%"),
+                              progressColor: Color(0xFF509AF2),
+                            ),
+                            CircularPercentIndicator(
+                              radius: 60.0,
+                              lineWidth: 7.0,
+                              percent: 0.5,
+                              center: Text("100%"),
+                              progressColor: Color(0xFF509AF2),
+                            ),
+                            CircularPercentIndicator(
+                              radius: 60.0,
+                              lineWidth: 7.0,
+                              percent: 0.5,
+                              center: Text("100%"),
+                              progressColor: Color(0xFF509AF2),
+                            ),
                           ],
                         ),
                       ),
