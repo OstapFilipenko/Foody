@@ -283,33 +283,113 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            CircularPercentIndicator(
-                              radius: 60.0,
-                              lineWidth: 7.0,
-                              percent: 0.5,
-                              center: Text("100%"),
-                              progressColor: Color(0xFF509AF2),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  CircularPercentIndicator(
+                                    radius: 60.0,
+                                    lineWidth: 7.0,
+                                    percent: 0.5,
+                                    animation: true,
+                                    animationDuration: 1200,
+                                    center: Text("100%"),
+                                    progressColor: Color(0xFF509AF2),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Kcal",
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            CircularPercentIndicator(
-                              radius: 60.0,
-                              lineWidth: 7.0,
-                              percent: 0.5,
-                              center: Text("100%"),
-                              progressColor: Color(0xFF509AF2),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  CircularPercentIndicator(
+                                    radius: 60.0,
+                                    lineWidth: 7.0,
+                                    percent: 0.5,
+                                    animation: true,
+                                    animationDuration: 1200,
+                                    center: Text("100%"),
+                                    progressColor: Colors.green,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Fats",
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            CircularPercentIndicator(
-                              radius: 60.0,
-                              lineWidth: 7.0,
-                              percent: 0.5,
-                              center: Text("100%"),
-                              progressColor: Color(0xFF509AF2),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  CircularPercentIndicator(
+                                    radius: 60.0,
+                                    lineWidth: 7.0,
+                                    percent: 0.5,
+                                    animation: true,
+                                    animationDuration: 1200,
+                                    center: Text("100%"),
+                                    progressColor: Colors.red,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Carb.",
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            CircularPercentIndicator(
-                              radius: 60.0,
-                              lineWidth: 7.0,
-                              percent: 0.5,
-                              center: Text("100%"),
-                              progressColor: Color(0xFF509AF2),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  CircularPercentIndicator(
+                                    radius: 60.0,
+                                    lineWidth: 7.0,
+                                    percent: 0.5,
+                                    animation: true,
+                                    animationDuration: 1200,
+                                    center: Text("100%"),
+                                    progressColor: Colors.orange,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Protein",
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
