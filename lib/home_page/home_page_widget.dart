@@ -34,13 +34,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
   };
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
-  List<ProductFirestore> productsToday = [];
   Map<String, List<ProductFirestore>> productsByDay = {};
   String today;
   String currentDay;
   String displayedCurrentDay;
   int daysLoaded = 5;
   int dayMoveHelper = 0;
+
+  //progress circle data max
+  double kcal;
+  double fats;
+  double carb;
+  double protein;
+
+  //actual consumed
+  double kcalConsumed = 0;
+  double fatsConsumed = 0;
+  double carbConsumed = 0;
+  double proteinConsumed = 0;
 
   @override
   void initState() {
@@ -56,17 +67,41 @@ class _HomePageWidgetState extends State<HomePageWidget>
     displayedCurrentDay = DateFormat("dd.MM.yyyy").format(DateTime.now());
   }
 
-  Future<Map<String, List<ProductFirestore>>> fillCalender() async {
-    productsByDay[today] = await getAllConsumed();
+  Future<Map<String, List<ProductFirestore>>> loadStartData() async {
+    productsByDay[today] = await getAllConsumedByDate(today);
+    //calculate all values of day
+    for (ProductFirestore product in productsByDay[today]) {
+      this.kcalConsumed += product.calories;
+      this.fatsConsumed += product.fats;
+      this.carbConsumed += product.carbohydrates;
+      this.proteinConsumed += product.protein;
+    }
+
+    //get products consumed on each day
     for (int i = 0; i <= daysLoaded; i++) {
       String day = DateFormat("yyyy-MM-dd hh:mm:ss")
           .format(DateTime.now().subtract(Duration(days: i)))
           .split(" ")[0];
       productsByDay[day] = await getAllConsumedByDate(day);
     }
-    productsByDay.forEach((key, value) {
-      print(key + "------------------------------");
+
+    //loading the values from the db to show them in the textfield
+    await db.queryKcal().then((double kcal) {
+      this.kcal = kcal;
     });
+
+    await db.queryFats().then((double fats) {
+      this.fats = fats;
+    });
+
+    await db.queryCarbohydrates().then((double carbohydrates) {
+      this.carb = carbohydrates;
+    });
+
+    await db.queryProtein().then((double protein) {
+      this.protein = protein;
+    });
+
     return productsByDay;
   }
 
@@ -109,45 +144,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
     return productsByDay[dayOfConsumtion];
   }
 
-  Future<List<ProductFirestore>> getAllConsumed() async {
-    productsToday.clear();
-    print("Today: " + today);
-    await db
-        .queryAllProductsByDate(today)
-        .then((List<ProductConsumed> consumedProducts) async {
-      for (ProductConsumed element in consumedProducts) {
-        await ProductsRecord.collection
-            .doc(element.productID)
-            .get()
-            .then((DocumentSnapshot snapshot) {
-          productsToday.add(
-            new ProductFirestore(
-              int.parse(snapshot.get("barcode").toString()),
-              snapshot.get("name").toString(),
-              double.parse(snapshot.get("calories").toString()) *
-                  element.gramm /
-                  100,
-              double.parse(snapshot.get("carbohydrates").toString()) *
-                  element.gramm /
-                  100,
-              snapshot.get("description").toString(),
-              double.parse(snapshot.get("fats").toString()) *
-                  element.gramm /
-                  100,
-              double.parse(snapshot.get("protein").toString()) *
-                  element.gramm /
-                  100,
-              double.parse(snapshot.get("sugar").toString()) *
-                  element.gramm /
-                  100,
-            ),
-          );
-        });
-      }
-    });
-    return productsToday;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,7 +176,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
       ),
       backgroundColor: Colors.white,
       body: FutureBuilder<Map<String, List<ProductFirestore>>>(
-        future: fillCalender(),
+        future: loadStartData(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -291,10 +287,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: 0.5,
+                                    percent: (kcalConsumed / (kcal / 100))/100,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text("100%"),
+                                    center: Text(
+                                      (kcalConsumed / (kcal / 100))
+                                              .toStringAsFixed(1) +
+                                          "%",
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
                                     progressColor: Color(0xFF509AF2),
                                   ),
                                   SizedBox(
@@ -318,10 +324,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: 0.5,
+                                    percent: (fatsConsumed / (fats / 100))/100,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text("100%"),
+                                    center: Text(
+                                      (fatsConsumed / (fats / 100))
+                                              .toStringAsFixed(1) +
+                                          "%",
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
                                     progressColor: Colors.green,
                                   ),
                                   SizedBox(
@@ -345,10 +361,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: 0.5,
+                                    percent: (carbConsumed / (carb / 100))/100,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text("100%"),
+                                    center: Text(
+                                      (carbConsumed / (carb / 100))
+                                              .toStringAsFixed(1) +
+                                          "%",
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
                                     progressColor: Colors.red,
                                   ),
                                   SizedBox(
@@ -372,10 +398,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: 0.5,
+                                    percent: (proteinConsumed / (protein / 100))/100,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text("100%"),
+                                    center: Text(
+                                      (proteinConsumed / (protein / 100))
+                                              .toStringAsFixed(1) +
+                                          "%",
+                                      style:
+                                          FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
                                     progressColor: Colors.orange,
                                   ),
                                   SizedBox(
