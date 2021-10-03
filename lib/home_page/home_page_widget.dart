@@ -69,13 +69,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   Future<Map<String, List<ProductFirestore>>> loadStartData() async {
     productsByDay[today] = await getAllConsumedByDate(today);
-    //calculate all values of day
-    for (ProductFirestore product in productsByDay[today]) {
-      this.kcalConsumed += product.calories;
-      this.fatsConsumed += product.fats;
-      this.carbConsumed += product.carbohydrates;
-      this.proteinConsumed += product.protein;
-    }
+    calculateValuesOfDate(today);
 
     //get products consumed on each day
     for (int i = 0; i <= daysLoaded; i++) {
@@ -103,6 +97,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
     });
 
     return productsByDay;
+  }
+
+  calculateValuesOfDate(String date) {
+    this.proteinConsumed = 0;
+    this.fatsConsumed = 0;
+    this.carbConsumed = 0;
+    this.kcalConsumed = 0;
+
+    //calculate all values of day
+    if (productsByDay[date] != null) {
+      for (ProductFirestore product in productsByDay[date]) {
+        this.kcalConsumed += product.calories;
+        this.fatsConsumed += product.fats;
+        this.carbConsumed += product.carbohydrates;
+        this.proteinConsumed += product.protein;
+      }
+    }
   }
 
   Future<List<ProductFirestore>> getAllConsumedByDate(
@@ -193,6 +204,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      //previous day
                       IconButton(
                         icon: Icon(
                           Icons.keyboard_arrow_left,
@@ -207,18 +219,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   .subtract(Duration(days: daysLoaded + 1)))
                               .split(" ")[0];
                           productsByDay[day] = await getAllConsumedByDate(day);
+                          var cr = DateFormat("yyyy-MM-dd hh:mm:ss")
+                              .format(DateTime.now()
+                                  .subtract(Duration(days: dayMoveHelper)))
+                              .split(" ")[0];
+                          calculateValuesOfDate(cr);
                           setState(
                             () {
-                              currentDay = DateFormat("yyyy-MM-dd hh:mm:ss")
+                              currentDay = cr;
+                              displayedCurrentDay = DateFormat("dd.MM.yyyy")
                                   .format(DateTime.now()
                                       .subtract(Duration(days: dayMoveHelper)))
                                   .split(" ")[0];
-                              displayedCurrentDay = DateFormat("dd.MM.yyyy")
-                                  .format(DateTime.now());
                             },
                           );
                         },
                       ),
+                      //current date
                       Center(
                         child: Text(
                           displayedCurrentDay,
@@ -228,6 +245,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           ),
                         ),
                       ),
+                      //next day
                       IconButton(
                         icon: Icon(
                           Icons.keyboard_arrow_right,
@@ -235,16 +253,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           size: 30,
                         ),
                         splashRadius: 20,
-                        onPressed: () {
+                        onPressed: () async {
                           dayMoveHelper--;
+                          var cr = DateFormat("yyyy-MM-dd hh:mm:ss")
+                              .format(DateTime.now()
+                                  .subtract(Duration(days: dayMoveHelper)))
+                              .split(" ")[0];
+                          calculateValuesOfDate(cr);
                           setState(
                             () {
-                              currentDay = DateFormat("yyyy-MM-dd hh:mm:ss")
+                              this.currentDay = cr;
+                              displayedCurrentDay = DateFormat("dd.MM.yyyy")
                                   .format(DateTime.now()
                                       .subtract(Duration(days: dayMoveHelper)))
                                   .split(" ")[0];
-                              displayedCurrentDay = DateFormat("dd.MM.yyyy")
-                                  .format(DateTime.now());
                             },
                           );
                         },
@@ -287,7 +309,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: (kcalConsumed / (kcal / 100))/100,
+                                    percent:
+                                        (kcalConsumed / (kcal / 100)) / 100,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -324,7 +347,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: (fatsConsumed / (fats / 100))/100,
+                                    percent:
+                                        (fatsConsumed / (fats / 100)) / 100,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -361,7 +385,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: (carbConsumed / (carb / 100))/100,
+                                    percent:
+                                        (carbConsumed / (carb / 100)) / 100,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -398,7 +423,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   CircularPercentIndicator(
                                     radius: 60.0,
                                     lineWidth: 7.0,
-                                    percent: (proteinConsumed / (protein / 100))/100,
+                                    percent:
+                                        (proteinConsumed / (protein / 100)) /
+                                            100,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -506,7 +533,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 },
                               )
                             : Center(
-                                child: Text("No Data"),
+                                child: Text(
+                                  "No Data",
+                                  style: FlutterFlowTheme.bodyText1.override(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                       ),
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
