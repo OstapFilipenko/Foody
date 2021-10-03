@@ -37,6 +37,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   Map<String, List<ProductFirestore>> productsByDay = {};
   String today;
   String currentDay;
+  String displayedCurrentDay;
   int daysLoaded = 5;
   int dayMoveHelper = 0;
 
@@ -51,6 +52,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     today = now.split(" ")[0];
     currentDay = today;
+    displayedCurrentDay = DateFormat("dd.MM.yyyy").format(DateTime.now());
   }
 
   Future<Map<String, List<ProductFirestore>>> fillCalender() async {
@@ -200,6 +202,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           color: Colors.black,
                           size: 30,
                         ),
+                        splashRadius: 20,
                         onPressed: () async {
                           dayMoveHelper++;
                           String day = DateFormat("yyyy-MM-dd hh:mm:ss")
@@ -213,23 +216,28 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   .format(DateTime.now()
                                       .subtract(Duration(days: dayMoveHelper)))
                                   .split(" ")[0];
+                              displayedCurrentDay = DateFormat("dd.MM.yyyy")
+                                  .format(DateTime.now());
                             },
                           );
                         },
                       ),
-                      Text(
-                        currentDay,
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
+                      Center(
+                        child: Text(
+                          displayedCurrentDay,
+                          style: FlutterFlowTheme.bodyText1.override(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                      dayMoveHelper > 0 ? IconButton(
+                      IconButton(
                         icon: Icon(
                           Icons.keyboard_arrow_right,
                           color: Colors.black,
                           size: 30,
                         ),
+                        splashRadius: 20,
                         onPressed: () {
                           dayMoveHelper--;
                           setState(
@@ -238,10 +246,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   .format(DateTime.now()
                                       .subtract(Duration(days: dayMoveHelper)))
                                   .split(" ")[0];
+                              displayedCurrentDay = DateFormat("dd.MM.yyyy")
+                                  .format(DateTime.now());
                             },
                           );
                         },
-                      ) : Container(),
+                      )
                     ],
                   ).animated([animationsMap['textOnPageLoadAnimation']]),
                   Align(
@@ -399,59 +409,66 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: productsByDay[currentDay] != null ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: productsByDay[currentDay].length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: InkWell(
-                                onTap: () async {
-                                  await Navigator.pushAndRemoveUntil(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      duration: Duration(milliseconds: 300),
-                                      reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: ProductDetailsPageWidget(),
+                        child: productsByDay[currentDay] != null &&
+                                productsByDay[currentDay].length != 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: productsByDay[currentDay].length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.pushAndRemoveUntil(
+                                          context,
+                                          PageTransition(
+                                            type:
+                                                PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            reverseDuration:
+                                                Duration(milliseconds: 300),
+                                            child: ProductDetailsPageWidget(),
+                                          ),
+                                          (r) => false,
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            productsByDay[today][index].name,
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            productsByDay[today][index]
+                                                    .calories
+                                                    .toString() +
+                                                " kcal",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    (r) => false,
                                   );
                                 },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      productsByDay[today][index].name,
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Text(
-                                      productsByDay[today][index]
-                                              .calories
-                                              .toString() +
-                                          " kcal",
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              )
+                            : Center(
+                                child: Text("No Data"),
                               ),
-                            );
-                          },
-                        ) : Center(
-                          child: Text("No Data"),
-                        ),
                       ),
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                   ),
