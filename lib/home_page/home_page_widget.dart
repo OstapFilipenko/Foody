@@ -399,9 +399,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: ListView.builder(
+                        child: productsByDay[currentDay] != null ? ListView.builder(
                           shrinkWrap: true,
-                          itemCount: productsByDay[today].length,
+                          itemCount: productsByDay[currentDay].length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -449,6 +449,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               ),
                             );
                           },
+                        ) : Center(
+                          child: Text("No Data"),
                         ),
                       ),
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
