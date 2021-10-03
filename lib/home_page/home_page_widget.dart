@@ -36,7 +36,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
   List<ProductFirestore> productsToday = [];
   Map<String, List<ProductFirestore>> productsByDay = {};
   String today;
+  String currentDay;
   int daysLoaded = 5;
+  int dayMoveHelper = 0;
 
   @override
   void initState() {
@@ -48,6 +50,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     );
     String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
     today = now.split(" ")[0];
+    currentDay = today;
   }
 
   Future<Map<String, List<ProductFirestore>>> fillCalender() async {
@@ -191,13 +194,29 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(
-                        Icons.keyboard_arrow_left,
-                        color: Colors.black,
-                        size: 30,
-                      ),
+                      IconButton(
+                          icon: Icon(
+                            Icons.keyboard_arrow_left,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            String day = DateFormat("yyyy-MM-dd hh:mm:ss")
+                                .format(DateTime.now()
+                                    .subtract(Duration(days: daysLoaded + 1)))
+                                .split(" ")[0];
+                            productsByDay[day] =
+                                await getAllConsumedByDate(day);
+                            dayMoveHelper++;
+                            setState(() {
+                              currentDay = DateFormat("yyyy-MM-dd hh:mm:ss")
+                                  .format(DateTime.now()
+                                      .subtract(Duration(days: dayMoveHelper)))
+                                  .split(" ")[0];
+                            });
+                          }),
                       Text(
-                        today,
+                        currentDay,
                         style: FlutterFlowTheme.bodyText1.override(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
@@ -400,7 +419,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ),
                                     ),
                                     Text(
-                                      productsByDay[today][index].calories.toString() +
+                                      productsByDay[today][index]
+                                              .calories
+                                              .toString() +
                                           " kcal",
                                       style:
                                           FlutterFlowTheme.bodyText1.override(
