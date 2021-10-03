@@ -118,6 +118,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   Future<List<ProductFirestore>> getAllConsumedByDate(
       String dayOfConsumtion) async {
+        productsByDay[dayOfConsumtion] = [];
     await db
         .queryAllProductsByDate(dayOfConsumtion)
         .then((List<ProductConsumed> consumedProducts) async {
@@ -126,7 +127,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
             .doc(element.productID)
             .get()
             .then((DocumentSnapshot snapshot) {
-          productsByDay[dayOfConsumtion] = [];
+          
           productsByDay[dayOfConsumtion].add(
             new ProductFirestore(
               int.parse(snapshot.get("barcode").toString()),
