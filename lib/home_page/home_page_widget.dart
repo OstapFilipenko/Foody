@@ -36,6 +36,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   List<ProductFirestore> productsToday = [];
   Map<String, List<ProductFirestore>> productsByDay = {};
   String today;
+  int daysLoaded = 5;
 
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   Future<Map<String, List<ProductFirestore>>> fillCalender() async {
     productsByDay[today] = await getAllConsumed();
-    for (int i = 0; i <= 5; i++) {
+    for (int i = 0; i <= daysLoaded; i++) {
       String day = DateFormat("yyyy-MM-dd hh:mm:ss")
           .format(DateTime.now().subtract(Duration(days: i)))
           .split(" ")[0];
