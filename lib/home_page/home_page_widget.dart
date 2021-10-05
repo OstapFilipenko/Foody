@@ -5,6 +5,7 @@ import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
 import 'package:foody/backend/localModels/statistics.dart';
 import 'package:foody/backend/schema/products_record.dart';
+import 'package:foody/widgets/pieStatistic.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
@@ -302,50 +303,29 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  CircularPercentIndicator(
-                                    radius: 60.0,
-                                    lineWidth: 7.0,
-                                    percent:
-                                        statisticsByDay.containsKey(currentDay)
-                                            ? (statisticsByDay[currentDay]
-                                                                .getKcal() /
-                                                            (kcal / 100)) /
-                                                        100 <=
-                                                    1
-                                                ? (statisticsByDay[currentDay]
-                                                            .getKcal() /
-                                                        (kcal / 100)) /
-                                                    100
-                                                : 1
-                                            : 0,
-                                    animation: true,
-                                    animationDuration: 1200,
-                                    center: statisticsByDay
-                                            .containsKey(currentDay)
-                                        ? Text(
-                                            (statisticsByDay[currentDay]
-                                                            .getKcal() /
-                                                        (kcal / 100))
-                                                    .toStringAsFixed(1) +
-                                                "%",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          )
-                                        : Text(
-                                            "0.0 %",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                    progressColor: Color(0xFF509AF2),
-                                  ),
+                                  PieStatistic(
+                                      color: Color(0xFF509AF2),
+                                      statValueDisplay: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                          .getKcal() /
+                                                      (kcal / 100))
+                                                  .toStringAsFixed(1) +
+                                              "%"
+                                          : "0.0%",
+                                      percent: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                              .getKcal() /
+                                                          (kcal / 100)) /
+                                                      100 <=
+                                                  1
+                                              ? (statisticsByDay[currentDay]
+                                                          .getKcal() /
+                                                      (kcal / 100)) /
+                                                  100
+                                              : 1
+                                          : 0),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -364,50 +344,29 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  CircularPercentIndicator(
-                                    radius: 60.0,
-                                    lineWidth: 7.0,
-                                    percent:
-                                        statisticsByDay.containsKey(currentDay)
-                                            ? (statisticsByDay[currentDay]
-                                                                .getFats() /
-                                                            (fats / 100)) /
-                                                        100 <=
-                                                    1
-                                                ? (statisticsByDay[currentDay]
-                                                            .getFats() /
-                                                        (fats / 100)) /
-                                                    100
-                                                : 1
-                                            : 0,
-                                    animation: true,
-                                    animationDuration: 1200,
-                                    center: statisticsByDay
-                                            .containsKey(currentDay)
-                                        ? Text(
-                                            (statisticsByDay[currentDay]
-                                                            .getFats() /
-                                                        (fats / 100))
-                                                    .toStringAsFixed(1) +
-                                                "%",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          )
-                                        : Text(
-                                            "0.0 %",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                    progressColor: Colors.green,
-                                  ),
+                                  PieStatistic(
+                                      color: Colors.green,
+                                      statValueDisplay: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                          .getFats() /
+                                                      (fats / 100))
+                                                  .toStringAsFixed(1) +
+                                              "%"
+                                          : "0.0%",
+                                      percent: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                              .getFats() /
+                                                          (fats / 100)) /
+                                                      100 <=
+                                                  1
+                                              ? (statisticsByDay[currentDay]
+                                                          .getFats() /
+                                                      (fats / 100)) /
+                                                  100
+                                              : 1
+                                          : 0),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -426,50 +385,29 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  CircularPercentIndicator(
-                                    radius: 60.0,
-                                    lineWidth: 7.0,
-                                    percent:
-                                        statisticsByDay.containsKey(currentDay)
-                                            ? (statisticsByDay[currentDay]
-                                                                .getCarb() /
-                                                            (carb / 100)) /
-                                                        100 <=
-                                                    1
-                                                ? (statisticsByDay[currentDay]
-                                                            .getCarb() /
-                                                        (carb / 100)) /
-                                                    100
-                                                : 1
-                                            : 0,
-                                    animation: true,
-                                    animationDuration: 1200,
-                                    center: statisticsByDay
-                                            .containsKey(currentDay)
-                                        ? Text(
-                                            (statisticsByDay[currentDay]
-                                                            .getCarb() /
-                                                        (carb / 100))
-                                                    .toStringAsFixed(1) +
-                                                "%",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          )
-                                        : Text(
-                                            "0.0 %",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                    progressColor: Colors.red,
-                                  ),
+                                  PieStatistic(
+                                      color: Colors.red,
+                                      statValueDisplay: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                          .getCarb() /
+                                                      (carb / 100))
+                                                  .toStringAsFixed(1) +
+                                              "%"
+                                          : "0.0%",
+                                      percent: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                              .getCarb() /
+                                                          (carb / 100)) /
+                                                      100 <=
+                                                  1
+                                              ? (statisticsByDay[currentDay]
+                                                          .getCarb() /
+                                                      (carb / 100)) /
+                                                  100
+                                              : 1
+                                          : 0),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -488,50 +426,29 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  CircularPercentIndicator(
-                                    radius: 60.0,
-                                    lineWidth: 7.0,
-                                    percent:
-                                        statisticsByDay.containsKey(currentDay)
-                                            ? (statisticsByDay[currentDay]
-                                                                .getProtein() /
-                                                            (protein / 100)) /
-                                                        100 <=
-                                                    1
-                                                ? (statisticsByDay[currentDay]
-                                                            .getProtein() /
-                                                        (protein / 100)) /
-                                                    100
-                                                : 1
-                                            : 0,
-                                    animation: true,
-                                    animationDuration: 1200,
-                                    center: statisticsByDay
-                                            .containsKey(currentDay)
-                                        ? Text(
-                                            (statisticsByDay[currentDay]
-                                                            .getProtein() /
-                                                        (protein / 100))
-                                                    .toStringAsFixed(1) +
-                                                "%",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          )
-                                        : Text(
-                                            "0.0 %",
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                    progressColor: Colors.orange,
-                                  ),
+                                  PieStatistic(
+                                      color: Colors.orange,
+                                      statValueDisplay: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                          .getProtein() /
+                                                      (protein / 100))
+                                                  .toStringAsFixed(1) +
+                                              "%"
+                                          : "0.0%",
+                                      percent: statisticsByDay
+                                              .containsKey(currentDay)
+                                          ? (statisticsByDay[currentDay]
+                                                              .getProtein() /
+                                                          (protein / 100)) /
+                                                      100 <=
+                                                  1
+                                              ? (statisticsByDay[currentDay]
+                                                          .getProtein() /
+                                                      (protein / 100)) /
+                                                  100
+                                              : 1
+                                          : 0),
                                   SizedBox(
                                     height: 10,
                                   ),
