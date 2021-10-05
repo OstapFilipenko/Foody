@@ -311,7 +311,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (kcalConsumed / (kcal / 100)) / 100,
+                                        (kcalConsumed / (kcal / 100)) / 100 <= 1 ? (kcalConsumed / (kcal / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -349,7 +349,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (fatsConsumed / (fats / 100)) / 100,
+                                        (fatsConsumed / (fats / 100)) / 100 <= 1 ? (fatsConsumed / (fats / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -387,7 +387,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (carbConsumed / (carb / 100)) / 100,
+                                        (carbConsumed / (carb / 100)) / 100 <= 1 ? (carbConsumed / (carb / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -425,8 +425,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (proteinConsumed / (protein / 100)) /
-                                            100,
+                                        (proteinConsumed / (protein / 100)) / 100 <= 1 ? (proteinConsumed / (protein / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
@@ -509,7 +508,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            productsByDay[today][index].name,
+                                            productsByDay[currentDay][index].name,
                                             style: FlutterFlowTheme.bodyText1
                                                 .override(
                                               fontFamily: 'Poppins',
@@ -517,7 +516,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             ),
                                           ),
                                           Text(
-                                            productsByDay[today][index]
+                                            productsByDay[currentDay][index]
                                                     .calories
                                                     .toString() +
                                                 " kcal",
