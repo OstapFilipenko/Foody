@@ -36,7 +36,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
   Map<String, List<ProductFirestore>> productsByDay = {};
-  Map<String, Statistics> statisticsByDay = {}; 
+  Map<String, Statistics> statisticsByDay = {};
   String today;
   String currentDay;
   String displayedCurrentDay;
@@ -110,12 +110,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
     }
 
     return statistics;
-
   }
 
   Future<List<ProductFirestore>> getAllConsumedByDate(
       String dayOfConsumtion) async {
-        productsByDay[dayOfConsumtion] = [];
+    productsByDay[dayOfConsumtion] = [];
     await db
         .queryAllProductsByDate(dayOfConsumtion)
         .then((List<ProductConsumed> consumedProducts) async {
@@ -124,7 +123,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
             .doc(element.productID)
             .get()
             .then((DocumentSnapshot snapshot) {
-          
           productsByDay[dayOfConsumtion].add(
             new ProductFirestore(
               int.parse(snapshot.get("barcode").toString()),
@@ -222,7 +220,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               .format(DateTime.now()
                                   .subtract(Duration(days: dayMoveHelper)))
                               .split(" ")[0];
-                          
+
                           setState(
                             () {
                               currentDay = cr;
@@ -308,20 +306,44 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (statisticsByDay[currentDay].getKcal() / (kcal / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getKcal() / (kcal / 100)) / 100 : 1,
+                                        statisticsByDay.containsKey(currentDay)
+                                            ? (statisticsByDay[currentDay]
+                                                                .getKcal() /
+                                                            (kcal / 100)) /
+                                                        100 <=
+                                                    1
+                                                ? (statisticsByDay[currentDay]
+                                                            .getKcal() /
+                                                        (kcal / 100)) /
+                                                    100
+                                                : 1
+                                            : 0,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text(
-                                      (statisticsByDay[currentDay].getKcal() / (kcal / 100))
-                                              .toStringAsFixed(1) +
-                                          "%",
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                      ),
-                                    ),
+                                    center: statisticsByDay
+                                            .containsKey(currentDay)
+                                        ? Text(
+                                            (statisticsByDay[currentDay]
+                                                            .getKcal() /
+                                                        (kcal / 100))
+                                                    .toStringAsFixed(1) +
+                                                "%",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          )
+                                        : Text(
+                                            "0.0 %",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                     progressColor: Color(0xFF509AF2),
                                   ),
                                   SizedBox(
@@ -346,20 +368,44 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (statisticsByDay[currentDay].getFats() / (fats / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getFats() / (fats / 100)) / 100 : 1,
+                                        statisticsByDay.containsKey(currentDay)
+                                            ? (statisticsByDay[currentDay]
+                                                                .getFats() /
+                                                            (fats / 100)) /
+                                                        100 <=
+                                                    1
+                                                ? (statisticsByDay[currentDay]
+                                                            .getFats() /
+                                                        (fats / 100)) /
+                                                    100
+                                                : 1
+                                            : 0,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text(
-                                      (statisticsByDay[currentDay].getFats() / (fats / 100))
-                                              .toStringAsFixed(1) +
-                                          "%",
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                      ),
-                                    ),
+                                    center: statisticsByDay
+                                            .containsKey(currentDay)
+                                        ? Text(
+                                            (statisticsByDay[currentDay]
+                                                            .getFats() /
+                                                        (fats / 100))
+                                                    .toStringAsFixed(1) +
+                                                "%",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          )
+                                        : Text(
+                                            "0.0 %",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                     progressColor: Colors.green,
                                   ),
                                   SizedBox(
@@ -384,20 +430,44 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (statisticsByDay[currentDay].getCarb() / (carb / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getCarb() / (carb / 100)) / 100 : 1,
+                                        statisticsByDay.containsKey(currentDay)
+                                            ? (statisticsByDay[currentDay]
+                                                                .getCarb() /
+                                                            (carb / 100)) /
+                                                        100 <=
+                                                    1
+                                                ? (statisticsByDay[currentDay]
+                                                            .getCarb() /
+                                                        (carb / 100)) /
+                                                    100
+                                                : 1
+                                            : 0,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text(
-                                      (statisticsByDay[currentDay].getCarb() / (carb / 100))
-                                              .toStringAsFixed(1) +
-                                          "%",
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                      ),
-                                    ),
+                                    center: statisticsByDay
+                                            .containsKey(currentDay)
+                                        ? Text(
+                                            (statisticsByDay[currentDay]
+                                                            .getCarb() /
+                                                        (carb / 100))
+                                                    .toStringAsFixed(1) +
+                                                "%",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          )
+                                        : Text(
+                                            "0.0 %",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                     progressColor: Colors.red,
                                   ),
                                   SizedBox(
@@ -422,20 +492,44 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (statisticsByDay[currentDay].getProtein() / (protein / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getProtein() / (protein / 100)) / 100 : 1,
+                                        statisticsByDay.containsKey(currentDay)
+                                            ? (statisticsByDay[currentDay]
+                                                                .getProtein() /
+                                                            (protein / 100)) /
+                                                        100 <=
+                                                    1
+                                                ? (statisticsByDay[currentDay]
+                                                            .getProtein() /
+                                                        (protein / 100)) /
+                                                    100
+                                                : 1
+                                            : 0,
                                     animation: true,
                                     animationDuration: 1200,
-                                    center: Text(
-                                      (statisticsByDay[currentDay].getProtein() / (protein / 100))
-                                              .toStringAsFixed(1) +
-                                          "%",
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                      ),
-                                    ),
+                                    center: statisticsByDay
+                                            .containsKey(currentDay)
+                                        ? Text(
+                                            (statisticsByDay[currentDay]
+                                                            .getProtein() /
+                                                        (protein / 100))
+                                                    .toStringAsFixed(1) +
+                                                "%",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          )
+                                        : Text(
+                                            "0.0 %",
+                                            style: FlutterFlowTheme.bodyText1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                     progressColor: Colors.orange,
                                   ),
                                   SizedBox(
@@ -505,7 +599,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            productsByDay[currentDay][index].name,
+                                            productsByDay[currentDay][index]
+                                                .name,
                                             style: FlutterFlowTheme.bodyText1
                                                 .override(
                                               fontFamily: 'Poppins',
