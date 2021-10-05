@@ -280,7 +280,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
                     child: Material(
                       color: Colors.transparent,
                       elevation: 5,
