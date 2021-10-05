@@ -35,6 +35,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
   Map<String, List<ProductFirestore>> productsByDay = {};
+  Map<String, List<String>> statisticsByDay = {}; 
   String today;
   String currentDay;
   String displayedCurrentDay;
