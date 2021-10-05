@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
+import 'package:foody/backend/localModels/statistics.dart';
 import 'package:foody/backend/schema/products_record.dart';
 import 'package:intl/intl.dart';
 
@@ -35,7 +36,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final db = LocalDatabase();
   Map<String, List<ProductFirestore>> productsByDay = {};
-  Map<String, List<String>> statisticsByDay = {}; 
+  Map<String, Statistics> statisticsByDay = {}; 
   String today;
   String currentDay;
   String displayedCurrentDay;
@@ -47,12 +48,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
   double fats;
   double carb;
   double protein;
-
-  //actual consumed
-  double kcalConsumed = 0;
-  double fatsConsumed = 0;
-  double carbConsumed = 0;
-  double proteinConsumed = 0;
 
   @override
   void initState() {
@@ -70,7 +65,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   Future<Map<String, List<ProductFirestore>>> loadStartData() async {
     productsByDay[today] = await getAllConsumedByDate(today);
-    calculateValuesOfDate(today);
+    statisticsByDay[today] = calculateValuesOfDate(today);
 
     //get products consumed on each day
     for (int i = 0; i <= daysLoaded; i++) {
@@ -78,6 +73,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           .format(DateTime.now().subtract(Duration(days: i)))
           .split(" ")[0];
       productsByDay[day] = await getAllConsumedByDate(day);
+      statisticsByDay[day] = calculateValuesOfDate(day);
     }
 
     //loading the values from the db to show them in the textfield
@@ -100,21 +96,21 @@ class _HomePageWidgetState extends State<HomePageWidget>
     return productsByDay;
   }
 
-  calculateValuesOfDate(String date) {
-    this.proteinConsumed = 0;
-    this.fatsConsumed = 0;
-    this.carbConsumed = 0;
-    this.kcalConsumed = 0;
+  Statistics calculateValuesOfDate(String date) {
+    Statistics statistics = new Statistics.empty();
 
     //calculate all values of day
     if (productsByDay[date] != null) {
       for (ProductFirestore product in productsByDay[date]) {
-        this.kcalConsumed += product.calories;
-        this.fatsConsumed += product.fats;
-        this.carbConsumed += product.carbohydrates;
-        this.proteinConsumed += product.protein;
+        statistics.setKcal(statistics.getKcal() + product.calories);
+        statistics.setFats(statistics.getFats() + product.fats);
+        statistics.setCarb(statistics.getCarb() + product.carbohydrates);
+        statistics.setProtein(statistics.getProtein() + product.protein);
       }
     }
+
+    return statistics;
+
   }
 
   Future<List<ProductFirestore>> getAllConsumedByDate(
@@ -221,11 +217,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   .subtract(Duration(days: daysLoaded + 1)))
                               .split(" ")[0];
                           productsByDay[day] = await getAllConsumedByDate(day);
+                          statisticsByDay[day] = calculateValuesOfDate(day);
                           var cr = DateFormat("yyyy-MM-dd hh:mm:ss")
                               .format(DateTime.now()
                                   .subtract(Duration(days: dayMoveHelper)))
                               .split(" ")[0];
-                          calculateValuesOfDate(cr);
+                          
                           setState(
                             () {
                               currentDay = cr;
@@ -261,7 +258,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               .format(DateTime.now()
                                   .subtract(Duration(days: dayMoveHelper)))
                               .split(" ")[0];
-                          calculateValuesOfDate(cr);
                           setState(
                             () {
                               this.currentDay = cr;
@@ -312,11 +308,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (kcalConsumed / (kcal / 100)) / 100 <= 1 ? (kcalConsumed / (kcal / 100)) / 100 : 1,
+                                        (statisticsByDay[currentDay].getKcal() / (kcal / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getKcal() / (kcal / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
-                                      (kcalConsumed / (kcal / 100))
+                                      (statisticsByDay[currentDay].getKcal() / (kcal / 100))
                                               .toStringAsFixed(1) +
                                           "%",
                                       style:
@@ -350,11 +346,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (fatsConsumed / (fats / 100)) / 100 <= 1 ? (fatsConsumed / (fats / 100)) / 100 : 1,
+                                        (statisticsByDay[currentDay].getFats() / (fats / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getFats() / (fats / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
-                                      (fatsConsumed / (fats / 100))
+                                      (statisticsByDay[currentDay].getFats() / (fats / 100))
                                               .toStringAsFixed(1) +
                                           "%",
                                       style:
@@ -388,11 +384,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (carbConsumed / (carb / 100)) / 100 <= 1 ? (carbConsumed / (carb / 100)) / 100 : 1,
+                                        (statisticsByDay[currentDay].getCarb() / (carb / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getCarb() / (carb / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
-                                      (carbConsumed / (carb / 100))
+                                      (statisticsByDay[currentDay].getCarb() / (carb / 100))
                                               .toStringAsFixed(1) +
                                           "%",
                                       style:
@@ -426,11 +422,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     radius: 60.0,
                                     lineWidth: 7.0,
                                     percent:
-                                        (proteinConsumed / (protein / 100)) / 100 <= 1 ? (proteinConsumed / (protein / 100)) / 100 : 1,
+                                        (statisticsByDay[currentDay].getProtein() / (protein / 100)) / 100 <= 1 ? (statisticsByDay[currentDay].getProtein() / (protein / 100)) / 100 : 1,
                                     animation: true,
                                     animationDuration: 1200,
                                     center: Text(
-                                      (proteinConsumed / (protein / 100))
+                                      (statisticsByDay[currentDay].getProtein() / (protein / 100))
                                               .toStringAsFixed(1) +
                                           "%",
                                       style:

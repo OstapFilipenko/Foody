@@ -1,15 +1,12 @@
 class Statistics {
-  double _kcal;
-  double _fats;
-  double _carb;
-  double _protein;
+  double _kcal = 0;
+  double _fats = 0;
+  double _carb = 0;
+  double _protein = 0;
 
-  Statistics(double kcal, double fats, double carb, double protein) {
-    this._kcal = kcal;
-    this._fats = fats;
-    this._carb = carb;
-    this._protein = protein;
-  }
+  Statistics.empty();
+
+  Statistics(this._kcal, this._fats, this._carb, this._protein);
 
   double getKcal() => this._kcal;
 
@@ -23,7 +20,7 @@ class Statistics {
 
   setCarb(double carb) => this._carb = carb;
 
-  double getProtein() => this._carb;
+  double getProtein() => this._protein;
 
   setProtein(double protein) => this._protein = protein; 
 
