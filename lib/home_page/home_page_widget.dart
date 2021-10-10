@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
@@ -15,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class HomePageWidget extends StatefulWidget {
   HomePageWidget({Key key}) : super(key: key);

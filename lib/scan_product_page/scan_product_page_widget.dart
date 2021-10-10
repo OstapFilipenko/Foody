@@ -201,16 +201,31 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                       scanAreaScale: .9,
                       scanLineColor: FlutterFlowTheme.primaryColor,
                       onCapture: (data) async {
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.rightToLeft,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300),
-                            child: ProductDetailsPageWidget(
-                                docID: await findBarcode(data)),
-                          ),
-                        );
+                        barcodeStr = await findBarcode(data);
+                        if (barcodeStr != null) {
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child:
+                                  ProductDetailsPageWidget(docID: barcodeStr),
+                            ),
+                          );
+                        } else {
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child: ProductAddPage(
+                                barcodeProduct: data,
+                              ),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
