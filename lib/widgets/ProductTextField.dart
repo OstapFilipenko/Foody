@@ -6,10 +6,12 @@ class ProductTextField extends StatelessWidget {
     Key key,
     @required this.textController,
     @required this.hintText,
+    @required this.number,
   }) : super(key: key);
 
   final TextEditingController textController;
   final String hintText;
+  final bool number;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class ProductTextField extends StatelessWidget {
         fontFamily: 'Poppins',
         color: Colors.black,
       ),
-      keyboardType: TextInputType.number,
+      keyboardType: this.number ? TextInputType.number : TextInputType.text,
       validator: (val) {
         if (val.isEmpty) {
           return 'This field is required';
