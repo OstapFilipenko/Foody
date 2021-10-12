@@ -51,8 +51,6 @@ class LocalDatabase {
             '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('protein', 0.0)''');
         await db.execute(
             '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('sugar', 0.0)''');
-        await db.execute(
-            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('weightStarted', 0.0)''');
 
         return db;
       },
@@ -138,15 +136,7 @@ class LocalDatabase {
         "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'sugar';");
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
-
-  //Get the value of field weightStarted
-  Future<double> queryWeightStarted() async {
-    Database db = await database();
-    var result = await db.rawQuery(
-        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'weightStarted';");
-    return result.isNotEmpty ? result[0]['val'] : Null;
-  }
-
+  
   //Update the value of field kcal
   Future<void> updateKcal(double kcal) async {
     Database db = await database();

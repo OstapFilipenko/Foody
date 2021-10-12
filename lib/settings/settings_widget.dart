@@ -19,7 +19,6 @@ class _SettingsWidgetState extends State<SettingsWidget>
   TextEditingController carbohydratesController;
   TextEditingController proteinController;
   TextEditingController sugarController;
-  TextEditingController weightController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -46,7 +45,6 @@ class _SettingsWidgetState extends State<SettingsWidget>
     carbohydratesController = TextEditingController();
     proteinController = TextEditingController();
     sugarController = TextEditingController();
-    weightController = TextEditingController();
   }
 
   Future loadPersonalInfo() async {
@@ -69,10 +67,6 @@ class _SettingsWidgetState extends State<SettingsWidget>
 
     await db.querySugar().then((double sugar) {
         sugarController.text = sugar.toString();
-    });
-
-    await db.queryWeightStarted().then((double weightStarted) {
-        weightController.text = weightStarted.toString();
     });
   }
 
@@ -398,58 +392,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 ),
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: weightController,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Weight started',
-                                        labelStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        filled: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter your amount';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ).animated(
-                                  [animationsMap['textOnPageLoadAnimation']]),
+                             
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                                 child: ElevatedButton(
@@ -468,8 +411,6 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                         double.parse(proteinController.text));
                                     await db.updateSugar(
                                         double.parse(sugarController.text));
-                                    await db.updateWeightStarted(
-                                        double.parse(weightController.text));
                                   },
                                   child: Text(
                                     "Save",
