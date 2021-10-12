@@ -6,6 +6,7 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'home_page/home_page_widget.dart';
 import 'settings/settings_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +21,29 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Foody',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: NavBarPage(),
+      home: TestClass(),
       debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class TestClass extends StatelessWidget {
+  const TestClass({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+        seconds: 5,
+        navigateAfterSeconds: NavBarPage(),
+        title: new Text(
+          'Welcome To Foody',
+          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+        ),
+        image: Image.asset('assets/images/logo.png'),
+        backgroundColor: Colors.white,
+        styleTextUnderTheLoader: new TextStyle(),
+        photoSize: 100.0,
+        loaderColor: FlutterFlowTheme.primaryColor);
   }
 }
 
@@ -82,6 +103,7 @@ class _NavBarPageState extends State<NavBarPage> {
         type: BottomNavigationBarType.fixed,
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'fab',
         child: Icon(Icons.add),
         backgroundColor: FlutterFlowTheme.primaryColor,
         onPressed: () {

@@ -136,152 +136,171 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
           elevation: 0,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          barcodeStr = await findBarcode(barcodeController.text);
-          if (barcodeStr != null) {
-            await Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                duration: Duration(milliseconds: 300),
-                reverseDuration: Duration(milliseconds: 300),
-                child: ProductDetailsPageWidget(docID: barcodeStr),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FloatingActionButton(
+              child: Icon(
+                Icons.arrow_back_outlined,
+                color: Colors.black,
+                size: 24,
               ),
-            );
-          } else {
-            await Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                duration: Duration(milliseconds: 300),
-                reverseDuration: Duration(milliseconds: 300),
-                child: ProductAddPage(
-                  barcodeProduct: barcodeController.text,
-                ),
-              ),
-            );
-          }
-        },
-        backgroundColor: Color(0xFFF0F0F0),
-        elevation: 8,
-        child: Align(
-          alignment: Alignment(0, 0),
-          child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.black,
-            size: 24,
-          ),
-        ),
-      ).animated([animationsMap['floatingActionButtonOnPageLoadAnimation']]),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
-          child: ListView(
-            children: [
-              Align(
-                alignment: Alignment(0, -0.9),
-                child: Text(
-                  'Scan the product',
-                  style: FlutterFlowTheme.title1.override(
-                    fontFamily: 'Poppins',
+              backgroundColor: Color(0xFFF0F0F0),
+              elevation: 8,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ).animated(
+                [animationsMap['floatingActionButtonOnPageLoadAnimation']]),
+            FloatingActionButton.extended(
+              heroTag: 'fab',
+              label: Row(
+                children: [
+                  Text('Search'),
+                  Icon(
+                    Icons.arrow_forward_outlined,
+                    color: Colors.white,
+                    size: 24,
                   ),
-                ).animated([animationsMap['textOnPageLoadAnimation']]),
+                ],
               ),
-              Align(
-                alignment: Alignment(0, 0),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                  child: Container(
-                    width:
-                        MediaQuery.of(context).size.width, // custom wrap size
-                    height: 300,
-                    child: ScanView(
-                      controller: controller,
-                      scanAreaScale: .9,
-                      scanLineColor: FlutterFlowTheme.primaryColor,
-                      onCapture: (data) async {
-                        barcodeStr = await findBarcode(data);
-                        if (barcodeStr != null) {
-                          await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child:
-                                  ProductDetailsPageWidget(docID: barcodeStr),
-                            ),
-                          );
-                        } else {
-                          await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child: ProductAddPage(
-                                barcodeProduct: data,
-                              ),
-                            ),
-                          );
-                        }
-                      },
+              onPressed: () async {
+                barcodeStr = await findBarcode(barcodeController.text);
+                if (barcodeStr != null) {
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: ProductDetailsPageWidget(docID: barcodeStr),
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                child: Material(
-                  color: Colors.transparent,
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Align(
-                      alignment: Alignment(0, 0),
-                      child: TextFormField(
-                        controller: barcodeController,
-                        obscureText: false,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Barcode Number',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Poppins',
-                          ),
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          filled: true,
-                          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        ),
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Poppins',
-                        ),
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return 'Please enter a barcode number';
-                          }
-                          if (val.length < 1) {
-                            return 'Requires at least 1 characters.';
-                          }
-                          return null;
-                        },
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
+                  );
+                } else {
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: ProductAddPage(
+                        barcodeProduct: barcodeController.text,
                       ),
                     ),
+                  );
+                }
+              },
+              backgroundColor: FlutterFlowTheme.primaryColor,
+              elevation: 8,
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Align(
+              alignment: Alignment(0, -0.9),
+              child: Text(
+                'Scan the product',
+                style: FlutterFlowTheme.title1.override(
+                  fontFamily: 'Poppins',
+                ),
+              ).animated([animationsMap['textOnPageLoadAnimation']]),
+            ),
+            Align(
+              alignment: Alignment(0, 0),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width, // custom wrap size
+                  height: 300,
+                  child: ScanView(
+                    controller: controller,
+                    scanAreaScale: .9,
+                    scanLineColor: FlutterFlowTheme.primaryColor,
+                    onCapture: (data) async {
+                      barcodeStr = await findBarcode(data);
+                      if (barcodeStr != null) {
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: ProductDetailsPageWidget(docID: barcodeStr),
+                          ),
+                        );
+                      } else {
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: ProductAddPage(
+                              barcodeProduct: data,
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
-                ).animated([animationsMap['textOnPageLoadAnimation']]),
-              )
-            ],
-          ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+              child: Material(
+                color: Colors.transparent,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Align(
+                    alignment: Alignment(0, 0),
+                    child: TextFormField(
+                      controller: barcodeController,
+                      obscureText: false,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Barcode Number',
+                        labelStyle: FlutterFlowTheme.bodyText1.override(
+                          fontFamily: 'Poppins',
+                        ),
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        filled: true,
+                        contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      ),
+                      style: FlutterFlowTheme.bodyText1.override(
+                        fontFamily: 'Poppins',
+                      ),
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return 'Please enter a barcode number';
+                        }
+                        if (val.length < 1) {
+                          return 'Requires at least 1 characters.';
+                        }
+                        return null;
+                      },
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+              ).animated([animationsMap['textOnPageLoadAnimation']]),
+            )
+          ],
         ),
       ),
     );
