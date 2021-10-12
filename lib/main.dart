@@ -58,16 +58,12 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_rounded,
-              color: Color(0xFF9E9E9E),
-              size: 24,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
-              color: Color(0xFF9E9E9E),
-              size: 24,
             ),
             label: 'Settings',
           )
@@ -76,16 +72,18 @@ class _NavBarPageState extends State<NavBarPage> {
         currentIndex: tabs.keys.toList().indexOf(_currentPage),
         selectedItemColor: FlutterFlowTheme.primaryColor,
         unselectedItemColor: Color(0x8A000000),
+        unselectedIconTheme: IconThemeData(size: 22),
+        selectedIconTheme: IconThemeData(size: 26),
         onTap: (i) => setState(() => _currentPage = tabs.keys.toList()[i]),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         // Temporary fix for https://github.com/flutter/flutter/issues/84556
-        selectedLabelStyle: const TextStyle(fontSize: 0.001),
-        unselectedLabelStyle: const TextStyle(fontSize: 0.001),
+
         type: BottomNavigationBarType.fixed,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        backgroundColor: FlutterFlowTheme.primaryColor,
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => ScanProductPageWidget()));
