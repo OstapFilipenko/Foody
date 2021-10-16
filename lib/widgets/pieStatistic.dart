@@ -14,7 +14,7 @@ class PieStatistic extends StatelessWidget {
     return Container(
       child: CircularPercentIndicator(
         radius: 60.0,
-        lineWidth: 7.0,
+        lineWidth: 9.0,
         percent: this.percent,
         animation: true,
         animationDuration: 1200,
