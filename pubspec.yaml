@@ -42,6 +42,7 @@ dependencies:
   url_launcher:
   scan: ^1.4.3
   percent_indicator: ^3.0.1
+  push_notification: ^1.1.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -264,7 +264,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'fat',
+                                        'fats',
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
