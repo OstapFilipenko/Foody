@@ -87,25 +87,6 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     return idOfPruduct;
   }
 
-  showAlertDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      title: Text("No Product"),
-      content: Text("This product does not exist in our database :( "),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
-        ),
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

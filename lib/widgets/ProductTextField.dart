@@ -15,48 +15,51 @@ class ProductTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: textController,
-      obscureText: false,
-      decoration: InputDecoration(
-        labelText: this.hintText,
-        labelStyle: FlutterFlowTheme.bodyText1.override(
-          fontFamily: 'Poppins',
-          color: Colors.black,
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: Material(
+        color: Colors.transparent,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
         ),
-        hintText: this.hintText,
-        hintStyle: FlutterFlowTheme.bodyText1.override(
-          fontFamily: 'Poppins',
-          color: Colors.black,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: FlutterFlowTheme.primaryColor,
-            width: 1,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
           ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: FlutterFlowTheme.primaryColor,
-            width: 1,
+          child: TextFormField(
+            controller: textController,
+            obscureText: false,
+            decoration: InputDecoration(
+              labelText: this.hintText,
+              labelStyle: FlutterFlowTheme.bodyText1.override(
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+              ),
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: true,
+              contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            ),
+            style: FlutterFlowTheme.bodyText1.override(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.start,
+            maxLines: 1,
+            keyboardType:
+                this.number ? TextInputType.number : TextInputType.text,
+            validator: (val) {
+              if (val.isEmpty) {
+                return 'This field is required';
+              }
+              return null;
+            },
           ),
-          borderRadius: BorderRadius.circular(10),
         ),
-        contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       ),
-      style: FlutterFlowTheme.bodyText1.override(
-        fontFamily: 'Poppins',
-        color: Colors.black,
-      ),
-      keyboardType: this.number ? TextInputType.number : TextInputType.text,
-      validator: (val) {
-        if (val.isEmpty) {
-          return 'This field is required';
-        }
-
-        return null;
-      },
     );
   }
 }
