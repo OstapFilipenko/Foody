@@ -301,7 +301,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   PieStatistic(
-                                      color: Color(0xFF509AF2),
+                                      color: FlutterFlowTheme.primaryColor,
                                       statValueDisplay: statisticsByDay
                                               .containsKey(currentDay)
                                           ? (statisticsByDay[currentDay]
