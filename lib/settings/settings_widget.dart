@@ -1,5 +1,6 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
+import 'package:foody/widgets/productTextField.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -50,23 +51,23 @@ class _SettingsWidgetState extends State<SettingsWidget>
   Future loadPersonalInfo() async {
     //loading the values from the db to show them in the textfield
     await db.queryKcal().then((double kcal) {
-        kcalController.text = kcal.toString();
+      kcalController.text = kcal.toString();
     });
 
     await db.queryFats().then((double fats) {
-        fatsController.text = fats.toString();
+      fatsController.text = fats.toString();
     });
 
     await db.queryCarbohydrates().then((double carbohydrates) {
-        carbohydratesController.text = carbohydrates.toString();
+      carbohydratesController.text = carbohydrates.toString();
     });
 
     await db.queryProtein().then((double protein) {
-        proteinController.text = protein.toString();
+      proteinController.text = protein.toString();
     });
 
     await db.querySugar().then((double sugar) {
-        sugarController.text = sugar.toString();
+      sugarController.text = sugar.toString();
     });
   }
 
@@ -132,269 +133,38 @@ class _SettingsWidgetState extends State<SettingsWidget>
                           width: MediaQuery.of(context).size.width,
                           child: ListView(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: kcalController,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Amount kcal / day',
-                                        labelStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        filled: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter your amount';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ),
+                              ProductTextField(
+                                textController: kcalController,
+                                hintText: "Amount kcal / day",
+                                number: true,
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
+                              ProductTextField(
+                                textController: fatsController,
+                                hintText: "Amount fats / day",
+                                number: true,
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
+                              ProductTextField(
+                                textController: carbohydratesController,
+                                hintText: "Amount carbohyd. / day",
+                                number: true,
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
+                              ProductTextField(
+                                textController: proteinController,
+                                hintText: "Amount protein / day",
+                                number: true,
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
+                              ProductTextField(
+                                textController: sugarController,
+                                hintText: "Amount sugar / day",
+                                number: true,
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: fatsController,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Amount fats / day',
-                                        labelStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        filled: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter your amount';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ).animated(
-                                  [animationsMap['textOnPageLoadAnimation']]),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: carbohydratesController,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Amount carbohyd. / day',
-                                        labelStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        filled: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter your amount';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ).animated(
-                                  [animationsMap['textOnPageLoadAnimation']]),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: proteinController,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Amount protein / day',
-                                        labelStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        filled: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter your amount';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ).animated(
-                                  [animationsMap['textOnPageLoadAnimation']]),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: TextFormField(
-                                      controller: sugarController,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Amount sugar / day',
-                                        labelStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        filled: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Please enter your amount';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ).animated(
-                                  [animationsMap['textOnPageLoadAnimation']]),
-                             
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     if (!formKey.currentState.validate()) {
