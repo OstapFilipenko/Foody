@@ -214,7 +214,7 @@ class _ProductAddPageState extends State<ProductAddPage>
                               duration: Duration(milliseconds: 300),
                               reverseDuration: Duration(milliseconds: 300),
                               child: ProductDetailsPageWidget(
-                                  docID: await findBarcode(barcode.text)),
+                                  docID: await findBarcode(barcode.text), viewProduct: false,),
                             ),
                           );
                         },

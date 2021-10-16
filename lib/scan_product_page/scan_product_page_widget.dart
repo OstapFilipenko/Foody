@@ -107,7 +107,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 type: PageTransitionType.rightToLeft,
                 duration: Duration(milliseconds: 300),
                 reverseDuration: Duration(milliseconds: 300),
-                child: ProductDetailsPageWidget(docID: barcodeStr),
+                child: ProductDetailsPageWidget(docID: barcodeStr, viewProduct: false,),
               ),
             );
           } else {
@@ -171,7 +171,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                               duration: Duration(milliseconds: 300),
                               reverseDuration: Duration(milliseconds: 300),
                               child:
-                                  ProductDetailsPageWidget(docID: barcodeStr),
+                                  ProductDetailsPageWidget(docID: barcodeStr, viewProduct: false,),
                             ),
                           );
                         } else {

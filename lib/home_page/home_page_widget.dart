@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foody/Utils/dataUtils.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
 import 'package:foody/backend/localModels/statistics.dart';
@@ -500,7 +501,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 Duration(milliseconds: 300),
                                             reverseDuration:
                                                 Duration(milliseconds: 300),
-                                            child: ProductDetailsPageWidget(),
+                                            child: ProductDetailsPageWidget(docID: await findBarcode(productsByDay[currentDay][index].barcode.toString()), viewProduct: true,),
                                           ),
                                           (r) => false,
                                         );

@@ -12,7 +12,8 @@ import 'package:page_transition/page_transition.dart';
 
 class ProductDetailsPageWidget extends StatefulWidget {
   final String docID;
-  ProductDetailsPageWidget({Key key, this.docID});
+  final bool viewProduct;
+  ProductDetailsPageWidget({Key key, this.docID, this.viewProduct});
 
   @override
   _ProductDetailsPageWidgetState createState() =>
@@ -113,34 +114,64 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
               actions: [],
               elevation: 0,
             )),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await insertConsumedProduct(ProductConsumed(
-              productID: widget.docID,
-              eatenAt: DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()),
-              gramm: int.parse(gramController.text),
-            ));
-            await Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                duration: Duration(milliseconds: 300),
-                reverseDuration: Duration(milliseconds: 300),
-                child: NavBarPage(initialPage: 'HomePage'),
-              ),
-            );
-          },
-          backgroundColor: Color(0xFFF0F0F0),
-          elevation: 8,
-          child: Align(
-            alignment: Alignment(0, 0),
-            child: Icon(
-              Icons.check_outlined,
-              color: Colors.black,
-              size: 24,
-            ),
-          ),
-        ).animated([animationsMap['floatingActionButtonOnPageLoadAnimation']]),
+        floatingActionButton: widget.viewProduct
+            ? FloatingActionButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.leftToRight,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: NavBarPage(initialPage: 'HomePage'),
+                    ),
+                  );
+                },
+                backgroundColor: Color(0xFFF0F0F0),
+                elevation: 8,
+                child: Align(
+                  alignment: Alignment(0, 0),
+                  child: Icon(
+                    Icons.arrow_back_outlined,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ),
+              ).animated(
+                [animationsMap['floatingActionButtonOnPageLoadAnimation']])
+            : FloatingActionButton(
+                onPressed: () async {
+                  await insertConsumedProduct(ProductConsumed(
+                    productID: widget.docID,
+                    eatenAt: DateFormat("yyyy-MM-dd hh:mm:ss")
+                        .format(DateTime.now()),
+                    gramm: int.parse(gramController.text),
+                  ));
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: NavBarPage(initialPage: 'HomePage'),
+                    ),
+                  );
+                },
+                backgroundColor: Color(0xFFF0F0F0),
+                elevation: 8,
+                child: Align(
+                  alignment: Alignment(0, 0),
+                  child: Icon(
+                    Icons.check_outlined,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ),
+              ).animated(
+                [animationsMap['floatingActionButtonOnPageLoadAnimation']]),
+        floatingActionButtonLocation: widget.viewProduct
+            ? FloatingActionButtonLocation.startFloat
+            : FloatingActionButtonLocation.endFloat,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
@@ -297,7 +328,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                     ),
                   ),
                 ).animated([animationsMap['textOnPageLoadAnimation']]),
-                Padding(
+                !widget.viewProduct ? Padding(
                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Material(
                     color: Colors.transparent,
@@ -344,7 +375,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                       ),
                     ),
                   ),
-                ).animated([animationsMap['textOnPageLoadAnimation']]),
+                ).animated([animationsMap['textOnPageLoadAnimation']]) : Container(),
               ],
             ),
           ),
