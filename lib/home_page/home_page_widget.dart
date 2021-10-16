@@ -4,6 +4,7 @@ import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
 import 'package:foody/backend/localModels/statistics.dart';
 import 'package:foody/backend/schema/products_record.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/pieStatistic.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomePageWidget extends StatefulWidget {
   HomePageWidget({Key key}) : super(key: key);
@@ -271,11 +273,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   Align(
                     alignment: Alignment(0, -0.9),
                     child: Text(
-                      'Activity',
+                      'titleHome',
                       style: FlutterFlowTheme.title1.override(
                         fontFamily: 'Poppins',
                       ),
-                    ).animated([animationsMap['textOnPageLoadAnimation']]),
+                    ).tr().animated([animationsMap['textOnPageLoadAnimation']]),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
@@ -328,12 +330,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Kcal",
+                                    "kcal",
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ),
+                                  ).tr(),
                                 ],
                               ),
                             ),
@@ -369,12 +371,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Fats",
+                                    "fats",
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ),
+                                  ).tr(),
                                 ],
                               ),
                             ),
@@ -410,12 +412,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Carb.",
+                                    "carb",
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ),
+                                  ).tr(),
                                 ],
                               ),
                             ),
@@ -451,12 +453,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Protein",
+                                    "protein",
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ),
+                                  ).tr(),
                                 ],
                               ),
                             ),
@@ -541,12 +543,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               )
                             : Center(
                                 child: Text(
-                                  "No Data",
+                                  "nd",
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,
                                   ),
-                                ),
+                                ).tr(),
                               ),
                       ),
                     ).animated([animationsMap['textOnPageLoadAnimation']]),

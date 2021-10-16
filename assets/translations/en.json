@@ -1,5 +1,5 @@
 {
-    "title-home": "Activity",
+    "titleHome": "Activity",
     "name": "Name",
     "calories": "Calories",
     "carbohydrates": "Carbohydrates",
@@ -9,7 +9,7 @@
     "carb": "Carb.",
     "protein": "Protein",
     "nd": "No Data",
-    "title-settings": "Settings",
+    "titleSettings": "Settings",
     "amountKcal": "Amount kcal / day",
     "amountFats": "Amount fats / day",
     "amountCarb": "Amount carb. / day",
@@ -17,8 +17,8 @@
     "amountSugar": "Amount sugar / day",
     "save": "Save",
     "required": "This field is required",
-    "title-details": "Nutritional information per 100g",
-    "title-scan": "Scan the product",
+    "titleDetails": "Nutritional information per 100g",
+    "titleScan": "Scan the product",
     "barcodeNumber": "Barcode",
     "enterAmount": "Enter amount (in g)",
     "add": "Add"
