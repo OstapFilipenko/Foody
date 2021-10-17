@@ -36,7 +36,7 @@ class ProductConsumed{
 
   @override
   String toString() {
-    return super.toString();
+    return "Product:" + this.productID + "#" + this.eatenAt + "#" + this.gramm.toString() + ";";
   }
 
 }

@@ -1,9 +1,12 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
 import 'package:foody/backend/localModels/language.dart';
+import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -54,6 +57,42 @@ class _SettingsWidgetState extends State<SettingsWidget>
     proteinController = TextEditingController();
     sugarController = TextEditingController();
   }
+
+  Future<String> getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    String filePath = '$appDocumentsPath/appLocalData.txt';
+    return filePath;
+  }
+
+  void saveFile() async {
+    File file = File(await getFilePath());
+    List<String> lines = [
+      "PersonalKcal:" + kcalController.text + ";",
+      "PersonalFats:" + fatsController.text + ";",
+      "PersonalCarbohydrates:" + carbohydratesController.text + ";",
+      "PersonalProtein:" + proteinController.text + ";",
+      "PersonalSugar:" + sugarController.text + ";",
+      "PersonalLanguage:" + language + ";",
+    ];
+    
+    List<ProductConsumed> products = await db.queryAllProducts();
+    products.forEach((product) {
+      lines.add(product.toString());
+    });
+
+    String fileContent = "";
+    lines.forEach((line) {
+      fileContent += line + "\n";
+    });
+    file.writeAsString(fileContent);
+  }
+
+  void readFile() async {
+    File file = File(await getFilePath());
+    String fileContent = await file.readAsString();
+    print('File Content: $fileContent');
+}
 
   Future loadPersonalInfo() async {
     //loading the values from the db to show them in the textfield
@@ -181,7 +220,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                         this.language = val;
                                         await db.updateLanguage(
                                             double.parse(language));
-                                        context.setLocale(Locale(languages.lastWhere((element) => element.id.toString() == val).langCode));
+                                        context.setLocale(Locale(languages
+                                            .lastWhere((element) =>
+                                                element.id.toString() == val)
+                                            .langCode));
                                         setState(() {});
                                       },
                                     ),
@@ -240,6 +282,41 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                   },
                                   child: Text(
                                     LocaleKeys.save.tr(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 21),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      shape: StadiumBorder()),
+                                ),
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    //export data from local device
+                                    await saveFile();
+                                    await readFile();
+                                    print("Path: " + await getFilePath());
+                                  },
+                                  child: Text(
+                                    "Export",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 21),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      shape: StadiumBorder()),
+                                ),
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    //import data from a file
+                                  },
+                                  child: Text(
+                                    "Import",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 21),
                                   ),
