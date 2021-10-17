@@ -37,7 +37,8 @@ class CodegenLoader extends AssetLoader{
   "titleScan": "Produkt einscannen",
   "barcodeNumber": "Barcode",
   "enterAmount": "Menge eingeben (in g)",
-  "add": "Hinzufügen"
+  "add": "Hinzufügen",
+  "language": "Sprache"
 };
 static const Map<String,dynamic> en = {
   "titleHome": "Activity",
@@ -62,7 +63,8 @@ static const Map<String,dynamic> en = {
   "titleScan": "Scan the product",
   "barcodeNumber": "Barcode",
   "enterAmount": "Enter amount (in g)",
-  "add": "Add"
+  "add": "Add",
+  "language": "Language"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"de": de, "en": en};
 }

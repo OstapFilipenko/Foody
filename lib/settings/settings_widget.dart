@@ -1,7 +1,9 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
+import 'package:foody/backend/localModels/language.dart';
 import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
+import 'package:path/path.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -24,6 +26,9 @@ class _SettingsWidgetState extends State<SettingsWidget>
   TextEditingController sugarController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  String language;
+
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -70,6 +75,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
 
     await db.querySugar().then((double sugar) {
       sugarController.text = sugar.toString();
+    });
+
+    await db.queryLanguage().then((double lang) {
+      language = lang.toString();
     });
   }
 
@@ -135,6 +144,51 @@ class _SettingsWidgetState extends State<SettingsWidget>
                           width: MediaQuery.of(context).size.width,
                           child: ListView(
                             children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: DropdownButton(
+                                      isExpanded: true,
+                                      value: this.language,
+                                      style: FlutterFlowTheme.title1.override(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 13,
+                                      ),
+                                      underline: SizedBox(),
+                                      icon: Icon(
+                                        Icons.language,
+                                        color: FlutterFlowTheme.primaryColor,
+                                      ),
+                                      items: languages.map((Language lang) {
+                                        return DropdownMenuItem<String>(
+                                          value: lang.id.toString(),
+                                          child: Text(lang.langCode),
+                                        );
+                                      }).toList(),
+                                      onChanged: (val) async {
+                                        this.language = val;
+                                        await db.updateLanguage(
+                                            double.parse(language));
+                                        context.setLocale(Locale(languages.lastWhere((element) => element.id.toString() == val).langCode));
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ).animated(
+                                  [animationsMap['textOnPageLoadAnimation']]),
                               ProductTextField(
                                 textController: kcalController,
                                 hintText: LocaleKeys.amountKcal.tr(),

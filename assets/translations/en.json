@@ -21,5 +21,6 @@
     "titleScan": "Scan the product",
     "barcodeNumber": "Barcode",
     "enterAmount": "Enter amount (in g)",
-    "add": "Add"
+    "add": "Add",
+    "language": "Language"
 }
