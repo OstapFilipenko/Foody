@@ -1,6 +1,7 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/Utils/dataUtils.dart';
 import 'package:foody/product_add_page/product_add_page_widget.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,6 +11,7 @@ import '../product_details_page/product_details_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scan/scan.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ScanProductPageWidget extends StatefulWidget {
   ScanProductPageWidget({Key key}) : super(key: key);
@@ -143,7 +145,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               Align(
                 alignment: Alignment(0, -0.9),
                 child: Text(
-                  'Scan the product',
+                  LocaleKeys.titleScan.tr(),
                   style: FlutterFlowTheme.title1.override(
                     fontFamily: 'Poppins',
                   ),
@@ -213,7 +215,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                         obscureText: false,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'Barcode Number',
+                          labelText: LocaleKeys.barcodeNumber.tr(),
                           labelStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Poppins',
                           ),
@@ -227,10 +229,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                         ),
                         validator: (val) {
                           if (val.isEmpty) {
-                            return 'Please enter a barcode number';
-                          }
-                          if (val.length < 1) {
-                            return 'Requires at least 1 characters.';
+                            return LocaleKeys.required.tr();
                           }
                           return null;
                         },

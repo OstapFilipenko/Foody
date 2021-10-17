@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foody/flutter_flow/flutter_flow_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 
 class ProductTextField extends StatelessWidget {
   const ProductTextField({
@@ -53,7 +55,7 @@ class ProductTextField extends StatelessWidget {
                 this.number ? TextInputType.number : TextInputType.text,
             validator: (val) {
               if (val.isEmpty) {
-                return 'This field is required';
+                return LocaleKeys.required.tr();
               }
               return null;
             },

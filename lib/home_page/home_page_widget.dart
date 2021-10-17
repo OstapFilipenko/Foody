@@ -273,11 +273,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   Align(
                     alignment: Alignment(0, -0.9),
                     child: Text(
-                      'titleHome',
+                      LocaleKeys.titleHome.tr(),
                       style: FlutterFlowTheme.title1.override(
                         fontFamily: 'Poppins',
                       ),
-                    ).tr().animated([animationsMap['textOnPageLoadAnimation']]),
+                    ).animated([animationsMap['textOnPageLoadAnimation']]),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
@@ -330,12 +330,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "kcal",
+                                    LocaleKeys.kcal.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ).tr(),
+                                  ),
                                 ],
                               ),
                             ),
@@ -371,12 +371,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "fats",
+                                    LocaleKeys.fats.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ).tr(),
+                                  ),
                                 ],
                               ),
                             ),
@@ -412,12 +412,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "carb",
+                                    LocaleKeys.carb.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ).tr(),
+                                  ),
                                 ],
                               ),
                             ),
@@ -453,12 +453,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "protein",
+                                    LocaleKeys.protein.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ).tr(),
+                                  ),
                                 ],
                               ),
                             ),
@@ -543,12 +543,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               )
                             : Center(
                                 child: Text(
-                                  "nd",
+                                  LocaleKeys.nd.tr(),
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,
                                   ),
-                                ).tr(),
+                                ),
                               ),
                       ),
                     ).animated([animationsMap['textOnPageLoadAnimation']]),

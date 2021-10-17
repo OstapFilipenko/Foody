@@ -1,10 +1,12 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SettingsWidget extends StatefulWidget {
   SettingsWidget({Key key}) : super(key: key);
@@ -122,7 +124,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                       Align(
                         alignment: Alignment(0, -0.9),
                         child: Text(
-                          'Settings',
+                          LocaleKeys.titleSettings.tr(),
                           style: FlutterFlowTheme.title1.override(
                             fontFamily: 'Poppins',
                           ),
@@ -135,31 +137,31 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             children: [
                               ProductTextField(
                                 textController: kcalController,
-                                hintText: "Amount kcal / day",
+                                hintText: LocaleKeys.amountKcal.tr(),
                                 number: true,
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
                               ProductTextField(
                                 textController: fatsController,
-                                hintText: "Amount fats / day",
+                                hintText: LocaleKeys.amountFats.tr(),
                                 number: true,
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
                               ProductTextField(
                                 textController: carbohydratesController,
-                                hintText: "Amount carbohyd. / day",
+                                hintText: LocaleKeys.amountCarb.tr(),
                                 number: true,
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
                               ProductTextField(
                                 textController: proteinController,
-                                hintText: "Amount protein / day",
+                                hintText: LocaleKeys.amountProtein.tr(),
                                 number: true,
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
                               ProductTextField(
                                 textController: sugarController,
-                                hintText: "Amount sugar / day",
+                                hintText: LocaleKeys.amountSugar.tr(),
                                 number: true,
                               ).animated(
                                   [animationsMap['textOnPageLoadAnimation']]),
@@ -183,7 +185,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                         double.parse(sugarController.text));
                                   },
                                   child: Text(
-                                    "Save",
+                                    LocaleKeys.save.tr(),
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 21),
                                   ),

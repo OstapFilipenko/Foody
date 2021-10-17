@@ -8,8 +8,10 @@ import 'package:foody/flutter_flow/flutter_flow_animations.dart';
 import 'package:foody/flutter_flow/flutter_flow_theme.dart';
 import 'package:foody/product_details_page/product_details_page_widget.dart';
 import 'package:foody/scan_product_page/scan_product_page_widget.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProductAddPage extends StatefulWidget {
   const ProductAddPage({Key key, this.barcodeProduct}) : super(key: key);
@@ -151,7 +153,7 @@ class _ProductAddPageState extends State<ProductAddPage>
                     Align(
                       alignment: Alignment(0, -0.9),
                       child: Text(
-                        'Add ' + this.barcode.text,
+                        LocaleKeys.add.tr() + this.barcode.text,
                         style: FlutterFlowTheme.title1.override(
                           fontFamily: 'Poppins',
                         ),
@@ -159,32 +161,32 @@ class _ProductAddPageState extends State<ProductAddPage>
                     ),
                     ProductTextField(
                       textController: name,
-                      hintText: "Name",
+                      hintText: LocaleKeys.name.tr(),
                       number: false,
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                     ProductTextField(
                       textController: calories,
-                      hintText: "Calories",
+                      hintText: LocaleKeys.calories.tr(),
                       number: true,
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                     ProductTextField(
                       textController: protein,
-                      hintText: "Protein",
+                      hintText: LocaleKeys.protein.tr(),
                       number: true,
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                     ProductTextField(
                       textController: carbohydrates,
-                      hintText: "Carbohydrates",
+                      hintText: LocaleKeys.carbohydrates.tr(),
                       number: true,
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                     ProductTextField(
                       textController: sugar,
-                      hintText: "Sugar",
+                      hintText: LocaleKeys.sugar.tr(),
                       number: true,
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                     ProductTextField(
                       textController: fats,
-                      hintText: "Fats",
+                      hintText: LocaleKeys.fats.tr(),
                       number: true,
                     ).animated([animationsMap['textOnPageLoadAnimation']]),
                     Padding(

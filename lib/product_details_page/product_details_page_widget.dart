@@ -2,6 +2,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/backend.dart';
 import 'package:foody/backend/localDatabase.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
@@ -9,6 +10,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProductDetailsPageWidget extends StatefulWidget {
   final String docID;
@@ -29,11 +31,11 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
   final db = LocalDatabase();
 
   var _productsRecord;
-  String _productName = "[NAME]";
-  String _productCals = "[CALS]";
-  String _productFats = "[FATS]";
-  String _productCarbs = "[CARBS]";
-  String _productProtein = "[PROTEIN]";
+  String _productName = "[" + LocaleKeys.name.tr() + "]";
+  String _productCals = "[" + LocaleKeys.kcal.tr() + "]";
+  String _productFats = "[" + LocaleKeys.fats.tr() + "]";
+  String _productCarbs = "[" + LocaleKeys.carb.tr() + "]";
+  String _productProtein = "[" + LocaleKeys.protein.tr() + "]";
 
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
@@ -212,7 +214,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 child: Text(
-                                  'Nutritional information per 100g',
+                                  LocaleKeys.titleDetails.tr(),
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,
@@ -241,7 +243,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'calories',
+                                        LocaleKeys.calories.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -264,7 +266,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'fats',
+                                        LocaleKeys.fats.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -287,7 +289,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'carbohid.',
+                                        LocaleKeys.carb.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -310,7 +312,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'protein',
+                                        LocaleKeys.protein.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -346,7 +348,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                         controller: gramController,
                         obscureText: false,
                         decoration: InputDecoration(
-                          labelText: 'Enter amount (in g)',
+                          labelText: LocaleKeys.enterAmount.tr(),
                           labelStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.w600,
@@ -365,10 +367,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                         keyboardType: TextInputType.number,
                         validator: (val) {
                           if (val.isEmpty) {
-                            return 'Please enter your amount';
-                          }
-                          if (val.length < 1) {
-                            return 'Requires at least 1 characters.';
+                            return LocaleKeys.required.tr();
                           }
                           return null;
                         },
