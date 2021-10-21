@@ -4,6 +4,7 @@ import 'package:foody/backend/localModels/language.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
+import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -93,7 +94,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
     });
     await file.writeAsString(fileContent);
   }
-  
+
   Future loadPersonalInfo() async {
     //loading the values from the db to show them in the textfield
     await db.queryKcal().then((double kcal) {
@@ -317,6 +318,8 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     //import data from a file
+
+                                    File file = await FilePicker.getFile();
                                   },
                                   child: Text(
                                     "Import",
