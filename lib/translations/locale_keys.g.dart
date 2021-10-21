@@ -25,5 +25,6 @@ abstract class  LocaleKeys {
   static const enterAmount = 'enterAmount';
   static const add = 'add';
   static const language = 'language';
+  static const at = 'at';
 
 }

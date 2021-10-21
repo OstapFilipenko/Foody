@@ -22,5 +22,6 @@
     "barcodeNumber": "Barcode",
     "enterAmount": "Menge eingeben (in g)",
     "add": "Hinzufügen",
-    "language": "Sprache"
+    "language": "Sprache",
+    "at": "um"
 }

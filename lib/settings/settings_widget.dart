@@ -4,9 +4,10 @@ import 'package:foody/backend/localModels/language.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+
+import 'package:flutter_share/flutter_share.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -59,13 +60,18 @@ class _SettingsWidgetState extends State<SettingsWidget>
   }
 
   Future<String> getFilePath() async {
-    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    String appDocumentsPath = appDocumentsDirectory.path;
-    String filePath = '$appDocumentsPath/appLocalData.txt';
+    Directory downloadDir;
+    if (Platform.isAndroid) {
+      downloadDir = await getExternalStorageDirectory();
+    } else {
+      downloadDir = await getApplicationDocumentsDirectory();
+    }
+    final fileName = "FoodyData.txt";
+    final filePath = "${downloadDir.path}/$fileName";
     return filePath;
   }
 
-  void saveFile() async {
+  Future<void> saveFile() async {
     File file = File(await getFilePath());
     List<String> lines = [
       "PersonalKcal:" + kcalController.text + ";",
@@ -75,7 +81,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
       "PersonalSugar:" + sugarController.text + ";",
       "PersonalLanguage:" + language + ";",
     ];
-    
+
     List<ProductConsumed> products = await db.queryAllProducts();
     products.forEach((product) {
       lines.add(product.toString());
@@ -85,15 +91,9 @@ class _SettingsWidgetState extends State<SettingsWidget>
     lines.forEach((line) {
       fileContent += line + "\n";
     });
-    file.writeAsString(fileContent);
+    await file.writeAsString(fileContent);
   }
-
-  void readFile() async {
-    File file = File(await getFilePath());
-    String fileContent = await file.readAsString();
-    print('File Content: $fileContent');
-}
-
+  
   Future loadPersonalInfo() async {
     //loading the values from the db to show them in the textfield
     await db.queryKcal().then((double kcal) {
@@ -296,7 +296,10 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                   onPressed: () async {
                                     //export data from local device
                                     await saveFile();
-                                    await readFile();
+                                    await FlutterShare.shareFile(
+                                      title: 'Foody app data',
+                                      filePath: await getFilePath(),
+                                    );
                                     print("Path: " + await getFilePath());
                                   },
                                   child: Text(
