@@ -149,10 +149,10 @@ class LocalDatabase {
   }
   
   //Update the value of field language
-  Future<void> updateLanguage(double kcal) async {
+  Future<void> updateLanguage(double language) async {
     Database db = await database();
     await db.execute('''
-      UPDATE $settingsTableName SET $s_value = $kcal WHERE $s_name = 'language';
+      UPDATE $settingsTableName SET $s_value = $language WHERE $s_name = 'language';
     ''');
   }
 
@@ -224,4 +224,10 @@ class LocalDatabase {
       DELETE FROM $consumedTableName WHERE $c_eatenAt = '$eatenAt' AND $c_productID = '$productID'
     ''');
   }
+
+  Future<void> deleteAllConsumedProducts() async {
+    Database db = await database();
+    await db.execute("DELETE FROM $consumedTableName");
+  }
+
 }

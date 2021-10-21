@@ -1,10 +1,12 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:foody/Utils/dataImport.dart';
 import 'package:foody/backend/localDatabase.dart';
 import 'package:foody/backend/localModels/language.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/productTextField.dart';
 import 'package:gx_file_picker/gx_file_picker.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -14,6 +16,8 @@ import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+import '../main.dart';
 
 class SettingsWidget extends StatefulWidget {
   SettingsWidget({Key key}) : super(key: key);
@@ -75,12 +79,12 @@ class _SettingsWidgetState extends State<SettingsWidget>
   Future<void> saveFile() async {
     File file = File(await getFilePath());
     List<String> lines = [
-      "PersonalKcal:" + kcalController.text + ";",
-      "PersonalFats:" + fatsController.text + ";",
-      "PersonalCarbohydrates:" + carbohydratesController.text + ";",
-      "PersonalProtein:" + proteinController.text + ";",
-      "PersonalSugar:" + sugarController.text + ";",
-      "PersonalLanguage:" + language + ";",
+      "PersonalKcal:" + kcalController.text,
+      "PersonalFats:" + fatsController.text,
+      "PersonalCarbohydrates:" + carbohydratesController.text,
+      "PersonalProtein:" + proteinController.text,
+      "PersonalSugar:" + sugarController.text,
+      "PersonalLanguage:" + language,
     ];
 
     List<ProductConsumed> products = await db.queryAllProducts();
@@ -280,6 +284,18 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                         double.parse(proteinController.text));
                                     await db.updateSugar(
                                         double.parse(sugarController.text));
+
+                                    await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.leftToRight,
+                                        duration: Duration(milliseconds: 300),
+                                        reverseDuration:
+                                            Duration(milliseconds: 300),
+                                        child:
+                                            NavBarPage(initialPage: 'HomePage'),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     LocaleKeys.save.tr(),
@@ -317,9 +333,23 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    //import data from a file
-
                                     File file = await FilePicker.getFile();
+                                    await importFromFile(file);
+                                    context.setLocale(
+                                        await db.queryLanguage() == 1
+                                            ? Locale("en")
+                                            : Locale("de"));
+                                    await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.leftToRight,
+                                        duration: Duration(milliseconds: 300),
+                                        reverseDuration:
+                                            Duration(milliseconds: 300),
+                                        child:
+                                            NavBarPage(initialPage: 'HomePage'),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     "Import",
