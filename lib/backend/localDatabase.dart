@@ -51,6 +51,8 @@ class LocalDatabase {
             '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('protein', 0.0)''');
         await db.execute(
             '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('sugar', 0.0)''');
+        await db.execute(
+            '''INSERT INTO $settingsTableName ($s_name, $s_value) VALUES ('language', 1.0)''');
 
         return db;
       },
@@ -97,6 +99,15 @@ class LocalDatabase {
     });
   }
 
+
+  //Get the value of field language
+  Future<double> queryLanguage() async {
+    Database db = await database();
+    var result = await db.rawQuery(
+        "SELECT $s_value as val FROM $settingsTableName WHERE $s_name = 'language';");
+    return result.isNotEmpty ? result[0]['val'] : Null;
+  }
+
   //Get the value of field kcal
   Future<double> queryKcal() async {
     Database db = await database();
@@ -137,6 +148,14 @@ class LocalDatabase {
     return result.isNotEmpty ? result[0]['val'] : Null;
   }
   
+  //Update the value of field language
+  Future<void> updateLanguage(double language) async {
+    Database db = await database();
+    await db.execute('''
+      UPDATE $settingsTableName SET $s_value = $language WHERE $s_name = 'language';
+    ''');
+  }
+
   //Update the value of field kcal
   Future<void> updateKcal(double kcal) async {
     Database db = await database();
@@ -205,4 +224,10 @@ class LocalDatabase {
       DELETE FROM $consumedTableName WHERE $c_eatenAt = '$eatenAt' AND $c_productID = '$productID'
     ''');
   }
+
+  Future<void> deleteAllConsumedProducts() async {
+    Database db = await database();
+    await db.execute("DELETE FROM $consumedTableName");
+  }
+
 }

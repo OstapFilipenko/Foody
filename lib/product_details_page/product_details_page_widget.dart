@@ -2,6 +2,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/backend.dart';
 import 'package:foody/backend/localDatabase.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
@@ -9,10 +10,12 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProductDetailsPageWidget extends StatefulWidget {
   final String docID;
-  ProductDetailsPageWidget({Key key, this.docID});
+  final bool viewProduct;
+  ProductDetailsPageWidget({Key key, this.docID, this.viewProduct});
 
   @override
   _ProductDetailsPageWidgetState createState() =>
@@ -28,11 +31,11 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
   final db = LocalDatabase();
 
   var _productsRecord;
-  String _productName = "[NAME]";
-  String _productCals = "[CALS]";
-  String _productFats = "[FATS]";
-  String _productCarbs = "[CARBS]";
-  String _productProtein = "[PROTEIN]";
+  String _productName = "[" + LocaleKeys.name.tr() + "]";
+  String _productCals = "[" + LocaleKeys.kcal.tr() + "]";
+  String _productFats = "[" + LocaleKeys.fats.tr() + "]";
+  String _productCarbs = "[" + LocaleKeys.carb.tr() + "]";
+  String _productProtein = "[" + LocaleKeys.protein.tr() + "]";
 
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
@@ -113,34 +116,64 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
               actions: [],
               elevation: 0,
             )),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await insertConsumedProduct(ProductConsumed(
-              productID: widget.docID,
-              eatenAt: DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()),
-              gramm: int.parse(gramController.text),
-            ));
-            await Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                duration: Duration(milliseconds: 300),
-                reverseDuration: Duration(milliseconds: 300),
-                child: NavBarPage(initialPage: 'HomePage'),
-              ),
-            );
-          },
-          backgroundColor: Color(0xFFF0F0F0),
-          elevation: 8,
-          child: Align(
-            alignment: Alignment(0, 0),
-            child: Icon(
-              Icons.check_outlined,
-              color: Colors.black,
-              size: 24,
-            ),
-          ),
-        ).animated([animationsMap['floatingActionButtonOnPageLoadAnimation']]),
+        floatingActionButton: widget.viewProduct
+            ? FloatingActionButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.leftToRight,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: NavBarPage(initialPage: 'HomePage'),
+                    ),
+                  );
+                },
+                backgroundColor: Color(0xFFF0F0F0),
+                elevation: 8,
+                child: Align(
+                  alignment: Alignment(0, 0),
+                  child: Icon(
+                    Icons.arrow_back_outlined,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ),
+              ).animated(
+                [animationsMap['floatingActionButtonOnPageLoadAnimation']])
+            : FloatingActionButton(
+                onPressed: () async {
+                  await insertConsumedProduct(ProductConsumed(
+                    productID: widget.docID,
+                    eatenAt: DateFormat("yyyy-MM-dd hh:mm:ss")
+                        .format(DateTime.now()),
+                    gramm: int.parse(gramController.text),
+                  ));
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: NavBarPage(initialPage: 'HomePage'),
+                    ),
+                  );
+                },
+                backgroundColor: Color(0xFFF0F0F0),
+                elevation: 8,
+                child: Align(
+                  alignment: Alignment(0, 0),
+                  child: Icon(
+                    Icons.check_outlined,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ),
+              ).animated(
+                [animationsMap['floatingActionButtonOnPageLoadAnimation']]),
+        floatingActionButtonLocation: widget.viewProduct
+            ? FloatingActionButtonLocation.startFloat
+            : FloatingActionButtonLocation.endFloat,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
@@ -181,7 +214,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 child: Text(
-                                  'Nutritional information per 100g',
+                                  LocaleKeys.titleDetails.tr(),
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,
@@ -210,7 +243,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'calories',
+                                        LocaleKeys.calories.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -233,7 +266,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'fat',
+                                        LocaleKeys.fats.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -256,7 +289,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'carbohid.',
+                                        LocaleKeys.carb.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -279,7 +312,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                                         ),
                                       ),
                                       Text(
-                                        'protein',
+                                        LocaleKeys.protein.tr(),
                                         style:
                                             FlutterFlowTheme.bodyText1.override(
                                           fontFamily: 'Poppins',
@@ -297,7 +330,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                     ),
                   ),
                 ).animated([animationsMap['textOnPageLoadAnimation']]),
-                Padding(
+                !widget.viewProduct ? Padding(
                   padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   child: Material(
                     color: Colors.transparent,
@@ -315,7 +348,7 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                         controller: gramController,
                         obscureText: false,
                         decoration: InputDecoration(
-                          labelText: 'Enter amount (in g)',
+                          labelText: LocaleKeys.enterAmount.tr(),
                           labelStyle: FlutterFlowTheme.bodyText1.override(
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.w600,
@@ -334,17 +367,14 @@ class _ProductDetailsPageWidgetState extends State<ProductDetailsPageWidget>
                         keyboardType: TextInputType.number,
                         validator: (val) {
                           if (val.isEmpty) {
-                            return 'Please enter your amount';
-                          }
-                          if (val.length < 1) {
-                            return 'Requires at least 1 characters.';
+                            return LocaleKeys.required.tr();
                           }
                           return null;
                         },
                       ),
                     ),
                   ),
-                ).animated([animationsMap['textOnPageLoadAnimation']]),
+                ).animated([animationsMap['textOnPageLoadAnimation']]) : Container(),
               ],
             ),
           ),

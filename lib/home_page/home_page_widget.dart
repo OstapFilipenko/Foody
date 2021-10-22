@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foody/Utils/dataUtils.dart';
 import 'package:foody/backend/localModels/product_consumed.dart';
 import 'package:foody/backend/localModels/product_firestore.dart';
 import 'package:foody/backend/localModels/statistics.dart';
 import 'package:foody/backend/schema/products_record.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import 'package:foody/widgets/pieStatistic.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/backend/localDatabase.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomePageWidget extends StatefulWidget {
   HomePageWidget({Key key}) : super(key: key);
@@ -270,7 +273,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   Align(
                     alignment: Alignment(0, -0.9),
                     child: Text(
-                      'Activity',
+                      LocaleKeys.titleHome.tr(),
                       style: FlutterFlowTheme.title1.override(
                         fontFamily: 'Poppins',
                       ),
@@ -301,7 +304,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   PieStatistic(
-                                      color: Color(0xFF509AF2),
+                                      color: FlutterFlowTheme.primaryColor,
                                       statValueDisplay: statisticsByDay
                                               .containsKey(currentDay)
                                           ? (statisticsByDay[currentDay]
@@ -327,7 +330,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Kcal",
+                                    LocaleKeys.kcal.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
@@ -368,7 +371,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Fats",
+                                    LocaleKeys.fats.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
@@ -409,7 +412,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Carb.",
+                                    LocaleKeys.carb.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
@@ -450,7 +453,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     height: 10,
                                   ),
                                   Text(
-                                    "Protein",
+                                    LocaleKeys.protein.tr(),
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
@@ -500,7 +503,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 Duration(milliseconds: 300),
                                             reverseDuration:
                                                 Duration(milliseconds: 300),
-                                            child: ProductDetailsPageWidget(),
+                                            child: ProductDetailsPageWidget(docID: await findBarcode(productsByDay[currentDay][index].barcode.toString()), viewProduct: true,),
                                           ),
                                           (r) => false,
                                         );
@@ -540,7 +543,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               )
                             : Center(
                                 child: Text(
-                                  "No Data",
+                                  LocaleKeys.nd.tr(),
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,

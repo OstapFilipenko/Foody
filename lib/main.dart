@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:foody/home_page/home_page_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foody/scan_product_page/scan_product_page_widget.dart';
+import 'package:foody/translations/codegen_loader.g.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'home_page/home_page_widget.dart';
 import 'settings/settings_widget.dart';
@@ -10,8 +12,19 @@ import 'package:splashscreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(
+    EasyLocalization(
+        child: MyApp(),
+        supportedLocales: [
+          Locale('en'),
+          Locale('de'),
+        ],
+        assetLoader: CodegenLoader(),
+        fallbackLocale: Locale('en'),
+        path: 'assets/translations'),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,6 +32,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
+      locale: context.locale,
       title: 'Foody',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: TestClass(),

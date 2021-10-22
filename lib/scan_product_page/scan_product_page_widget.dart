@@ -1,5 +1,7 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:foody/Utils/dataUtils.dart';
 import 'package:foody/product_add_page/product_add_page_widget.dart';
+import 'package:foody/translations/locale_keys.g.dart';
 import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,6 +11,7 @@ import '../product_details_page/product_details_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:scan/scan.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ScanProductPageWidget extends StatefulWidget {
   ScanProductPageWidget({Key key}) : super(key: key);
@@ -64,46 +67,6 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     );
 
     barcodeController = TextEditingController();
-  }
-
-  Future<String> findBarcode(String barcode) async {
-    String idOfPruduct;
-    QuerySnapshot<Map<String, dynamic>> snapshot = await ProductsRecord
-        .collection
-        .where("barcode", isEqualTo: int.parse(barcode))
-        .get();
-
-    if (snapshot.docs.isEmpty) {
-      return null;
-    }
-
-    List<QueryDocumentSnapshot> docs = snapshot.docs;
-    for (var doc in docs) {
-      if (doc.data() != null) {
-        idOfPruduct = doc.id;
-      }
-    }
-
-    return idOfPruduct;
-  }
-
-  showAlertDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      title: Text("No Product"),
-      content: Text("This product does not exist in our database :( "),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
-        ),
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 
   @override
