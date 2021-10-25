@@ -117,6 +117,45 @@ class _AddSettingsAtBeginningState extends State<AddSettingsAtBeginning> {
     return Form(
         key: formKey,
         child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: FloatingActionButton.extended(
+            heroTag: 'fab',
+            label: Row(
+              children: [
+                Text(LocaleKeys.save.tr()),
+                Icon(
+                  Icons.arrow_forward_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ],
+            ),
+            onPressed: () async {
+              if (!formKey.currentState.validate()) {
+                return;
+              }
+              //Updating the values in the local db
+              await db.updateKcal(double.parse(kcalController.text));
+              await db.updateFats(double.parse(fatsController.text));
+              await db.updateCarbohydrates(
+                  double.parse(carbohydratesController.text));
+              await db.updateProtein(double.parse(proteinController.text));
+              await db.updateSugar(double.parse(sugarController.text));
+
+              print('asdfasdfasdf');
+
+              await Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.leftToRight,
+                    duration: Duration(milliseconds: 300),
+                    reverseDuration: Duration(milliseconds: 300),
+                    child: NavBarPage(initialPage: 'HomePage'),
+                  ));
+            },
+            backgroundColor: FlutterFlowTheme.primaryColor,
+            elevation: 8,
+          ),
           appBar: PreferredSize(
             preferredSize:
                 Size.fromHeight(MediaQuery.of(context).size.height * 0.12),
@@ -180,40 +219,6 @@ class _AddSettingsAtBeginningState extends State<AddSettingsAtBeginning> {
                 textController: sugarController,
                 hintText: LocaleKeys.amountSugar.tr(),
                 number: true,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (!formKey.currentState.validate()) {
-                      return;
-                    }
-                    //Updating the values in the local db
-                    await db.updateKcal(double.parse(kcalController.text));
-                    await db.updateFats(double.parse(fatsController.text));
-                    await db.updateCarbohydrates(
-                        double.parse(carbohydratesController.text));
-                    await db
-                        .updateProtein(double.parse(proteinController.text));
-                    await db.updateSugar(double.parse(sugarController.text));
-
-                    print('asdfasdfasdf');
-
-                    await Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.leftToRight,
-                          duration: Duration(milliseconds: 300),
-                          reverseDuration: Duration(milliseconds: 300),
-                          child: NavBarPage(initialPage: 'HomePage'),
-                        ));
-                  },
-                  child: Text(
-                    LocaleKeys.save.tr(),
-                    style: TextStyle(color: Colors.white, fontSize: 21),
-                  ),
-                  style: ElevatedButton.styleFrom(shape: StadiumBorder()),
-                ),
               ),
             ],
           )),

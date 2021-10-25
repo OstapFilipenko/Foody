@@ -1,5 +1,6 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:foody/Utils/dataUtils.dart';
+import 'package:foody/home_page/home_page_widget.dart';
 import 'package:foody/product_add_page/product_add_page_widget.dart';
 import 'package:foody/translations/locale_keys.g.dart';
 import '../backend/backend.dart';
@@ -7,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
+import '../main.dart';
 import '../product_details_page/product_details_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -114,8 +116,16 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               ),
               backgroundColor: Color(0xFFF0F0F0),
               elevation: 8,
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.leftToRight,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: NavBarPage(initialPage: 'HomePage'),
+                    ),
+                  );
               },
             ).animated(
                 [animationsMap['floatingActionButtonOnPageLoadAnimation']]),
@@ -174,11 +184,11 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
             Align(
               alignment: Alignment(0, 0),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Container(
                   width: MediaQuery.of(context).size.width -
                       100, // custom wrap size
-                  height: 300,
+                  height: 250,
                   child: ScanView(
                     controller: controller,
                     scanAreaScale: .9,
@@ -208,7 +218,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               ),
             ),
             SizedBox(
-              height: 35,
+              height: 20,
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -258,10 +268,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
     );
   }
 
-  /*
-TODO text auf dynamisch ändern
+  //TODO text auf dynamisch ändern
 
-  */
   Widget _buildPopupDialog(BuildContext context) {
     return new AlertDialog(
       title: Text(LocaleKeys.popUpTitle.tr()),

@@ -46,7 +46,8 @@ class CodegenLoader extends AssetLoader{
   "popUpAnswerNo": "Nein",
   "search": "Suchen",
   "emptyBarcodeField": "Bitte geben Sie einen Barcode ein!",
-  "shortBarcodeField": "Geben Sie mindestens 2 Zeichen ein!"
+  "shortBarcodeField": "Geben Sie mindestens 2 Zeichen ein!",
+  "onlyNumbers": "Bitte nur Zahlen eingeben"
 };
 static const Map<String,dynamic> en = {
   "titleHome": "Activity",
@@ -80,7 +81,8 @@ static const Map<String,dynamic> en = {
   "popUpAnswerNo": "No",
   "search": "Search",
   "emptyBarcodeField": "Please enter a barcode number!",
-  "shortBarcodeField": "Requires at least 2 characters!"
+  "shortBarcodeField": "Requires at least 2 characters!",
+  "onlyNumbers": "Only numbers allowed"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"de": de, "en": en};
 }

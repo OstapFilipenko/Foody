@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foody/flutter_flow/flutter_flow_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:foody/translations/locale_keys.g.dart';
@@ -52,8 +53,11 @@ class ProductTextField extends StatelessWidget {
             textAlign: TextAlign.start,
             maxLines: 1,
             keyboardType:
-                this.number ? TextInputType.number : TextInputType.text,
+                this.number == true ? TextInputType.number : TextInputType.text,
             validator: (val) {
+              if(this.number && RegExp(r'[a-z]').hasMatch(val)) {
+                return LocaleKeys.onlyNumbers.tr();
+              }
               if (val.isEmpty) {
                 return LocaleKeys.required.tr();
               }

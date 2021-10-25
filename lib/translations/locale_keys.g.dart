@@ -33,5 +33,6 @@ abstract class  LocaleKeys {
   static const search = 'search';
   static const emptyBarcodeField = 'emptyBarcodeField';
   static const shortBarcodeField = 'shortBarcodeField';
+  static const onlyNumbers = 'onlyNumbers';
 
 }

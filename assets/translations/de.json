@@ -30,5 +30,6 @@
     "popUpAnswerNo": "Nein",
     "search": "Suchen",
     "emptyBarcodeField": "Bitte geben Sie einen Barcode ein!",
-    "shortBarcodeField": "Geben Sie mindestens 2 Zeichen ein!"
+    "shortBarcodeField": "Geben Sie mindestens 2 Zeichen ein!",
+    "onlyNumbers": "Bitte nur Zahlen eingeben"
 }

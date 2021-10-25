@@ -30,5 +30,6 @@
     "popUpAnswerNo": "No",
     "search": "Search",
     "emptyBarcodeField": "Please enter a barcode number!",
-    "shortBarcodeField": "Requires at least 2 characters!"
+    "shortBarcodeField": "Requires at least 2 characters!",
+    "onlyNumbers": "Only numbers allowed"
 }
