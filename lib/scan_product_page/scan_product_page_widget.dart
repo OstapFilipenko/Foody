@@ -26,6 +26,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String barcodeStr = "";
 
+  final _formKey = GlobalKey<FormState>();
+
   final animationsMap = {
     'textOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -121,7 +123,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               heroTag: 'fab',
               label: Row(
                 children: [
-                  Text('Search'),
+                  Text(LocaleKeys.search.tr()),
                   Icon(
                     Icons.arrow_forward_outlined,
                     color: Colors.white,
@@ -130,29 +132,25 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 ],
               ),
               onPressed: () async {
-                barcodeStr = await findBarcode(barcodeController.text);
-                if (barcodeStr != null) {
-                  await Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.rightToLeft,
-                      duration: Duration(milliseconds: 300),
-                      reverseDuration: Duration(milliseconds: 300),
-                      child: ProductDetailsPageWidget(docID: barcodeStr),
-                    ),
-                  );
-                } else {
-                  await Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.rightToLeft,
-                      duration: Duration(milliseconds: 300),
-                      reverseDuration: Duration(milliseconds: 300),
-                      child: ProductAddPage(
-                        barcodeProduct: barcodeController.text,
+                if (_formKey.currentState.validate()) {
+                  barcodeStr = await findBarcode(barcodeController.text);
+                  if (barcodeStr != null) {
+                    await Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: Duration(milliseconds: 300),
+                        reverseDuration: Duration(milliseconds: 300),
+                        child: ProductDetailsPageWidget(docID: barcodeStr),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _buildPopupDialog(context),
+                    );
+                  }
                 }
               },
               backgroundColor: FlutterFlowTheme.primaryColor,
@@ -167,7 +165,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
             Align(
               alignment: Alignment(0, -0.9),
               child: Text(
-                'Scan the product',
+                LocaleKeys.titleScan.tr(),
                 style: FlutterFlowTheme.title1.override(
                   fontFamily: 'Poppins',
                 ),
@@ -178,7 +176,8 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width, // custom wrap size
+                  width: MediaQuery.of(context).size.width -
+                      100, // custom wrap size
                   height: 300,
                   child: ScanView(
                     controller: controller,
@@ -197,16 +196,10 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                           ),
                         );
                       } else {
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.rightToLeft,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300),
-                            child: ProductAddPage(
-                              barcodeProduct: data,
-                            ),
-                          ),
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              _buildPopupDialog(context),
                         );
                       }
                     },
@@ -214,58 +207,97 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
-              child: Material(
-                color: Colors.transparent,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Align(
-                    alignment: Alignment(0, 0),
-                    child: TextFormField(
-                      controller: barcodeController,
-                      obscureText: false,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Barcode Number',
-                        labelStyle: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Poppins',
-                        ),
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        filled: true,
-                        contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      ),
-                      style: FlutterFlowTheme.bodyText1.override(
-                        fontFamily: 'Poppins',
-                      ),
-                      validator: (val) {
-                        if (val.isEmpty) {
-                          return 'Please enter a barcode number';
-                        }
-                        if (val.length < 1) {
-                          return 'Requires at least 1 characters.';
-                        }
-                        return null;
-                      },
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                    ),
-                  ),
-                ),
-              ).animated([animationsMap['textOnPageLoadAnimation']]),
-            )
+            SizedBox(
+              height: 35,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Align(
+                alignment: Alignment(0, 0),
+                child: Form(
+                    key: _formKey,
+                    child: Material(
+                        borderRadius: BorderRadius.circular(10.0),
+                        elevation: 5,
+                        child: TextFormField(
+                          controller: barcodeController,
+                          obscureText: false,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              labelText: LocaleKeys.barcodeNumber.tr(),
+                              labelStyle: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              filled: true,
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              fillColor: Colors.transparent),
+                          style: FlutterFlowTheme.bodyText1.override(
+                            fontFamily: 'Poppins',
+                          ),
+                          validator: (val) {
+                            if (val.isEmpty) {
+                              return LocaleKeys.emptyBarcodeField.tr();
+                            }
+                            if (val.length < 2) {
+                              return LocaleKeys.shortBarcodeField.tr();
+                            }
+                            return null;
+                          },
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                        ))),
+              ),
+            ).animated([animationsMap['textOnPageLoadAnimation']])
           ],
         ),
       ),
+    );
+  }
+
+  /*
+TODO text auf dynamisch ändern
+
+  */
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: Text(LocaleKeys.popUpTitle.tr()),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[Text(LocaleKeys.popUpText.tr())],
+      ),
+      actions: <Widget>[
+        // ignore: deprecated_member_use
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: Text(LocaleKeys.popUpAnswerNo.tr()),
+        ),
+        // ignore: deprecated_member_use
+        new FlatButton(
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.rightToLeft,
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                child: ProductAddPage(
+                  barcodeProduct: barcodeController.text,
+                ),
+              ),
+            );
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: Text(LocaleKeys.popUpAnswerYes.tr()),
+        ),
+      ],
     );
   }
 }

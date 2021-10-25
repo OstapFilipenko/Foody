@@ -218,7 +218,11 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                       items: languages.map((Language lang) {
                                         return DropdownMenuItem<String>(
                                           value: lang.id.toString(),
-                                          child: Text(lang.langCode),
+                                          child: Text(lang.langCode == 'de'
+                                              ? 'Deutsch'
+                                              : lang.langCode == 'en'
+                                                  ? 'English'
+                                                  : 'Null'),
                                         );
                                       }).toList(),
                                       onChanged: (val) async {

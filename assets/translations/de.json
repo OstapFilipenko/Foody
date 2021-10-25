@@ -23,5 +23,12 @@
     "enterAmount": "Menge eingeben (in g)",
     "add": "Hinzufügen",
     "language": "Sprache",
-    "at": "um"
+    "at": "um",
+    "popUpTitle": "Produkt nicht gefunden",
+    "popUpText": "Möchtest du es zur Datenbank hinzufügen?",
+    "popUpAnswerYes": "Ja",
+    "popUpAnswerNo": "Nein",
+    "search": "Suchen",
+    "emptyBarcodeField": "Bitte geben Sie einen Barcode ein!",
+    "shortBarcodeField": "Geben Sie mindestens 2 Zeichen ein!"
 }

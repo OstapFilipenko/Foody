@@ -23,5 +23,12 @@
     "enterAmount": "Enter amount (in g)",
     "add": "Add",
     "language": "Language",
-    "at": "at"
+    "at": "at",
+    "popUpTitle": "Product not found",
+    "popUpText": "Do you want to add it to the database?",
+    "popUpAnswerYes": "Yes",
+    "popUpAnswerNo": "No",
+    "search": "Search",
+    "emptyBarcodeField": "Please enter a barcode number!",
+    "shortBarcodeField": "Requires at least 2 characters!"
 }

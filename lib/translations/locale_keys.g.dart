@@ -26,5 +26,12 @@ abstract class  LocaleKeys {
   static const add = 'add';
   static const language = 'language';
   static const at = 'at';
+  static const popUpTitle = 'popUpTitle';
+  static const popUpText = 'popUpText';
+  static const popUpAnswerYes = 'popUpAnswerYes';
+  static const popUpAnswerNo = 'popUpAnswerNo';
+  static const search = 'search';
+  static const emptyBarcodeField = 'emptyBarcodeField';
+  static const shortBarcodeField = 'shortBarcodeField';
 
 }

@@ -38,7 +38,15 @@ class CodegenLoader extends AssetLoader{
   "barcodeNumber": "Barcode",
   "enterAmount": "Menge eingeben (in g)",
   "add": "Hinzufügen",
-  "language": "Sprache"
+  "language": "Sprache",
+  "at": "um",
+  "popUpTitle": "Produkt nicht gefunden",
+  "popUpText": "Möchtest du es zur Datenbank hinzufügen?",
+  "popUpAnswerYes": "Ja",
+  "popUpAnswerNo": "Nein",
+  "search": "Suchen",
+  "emptyBarcodeField": "Bitte geben Sie einen Barcode ein!",
+  "shortBarcodeField": "Geben Sie mindestens 2 Zeichen ein!"
 };
 static const Map<String,dynamic> en = {
   "titleHome": "Activity",
@@ -64,7 +72,15 @@ static const Map<String,dynamic> en = {
   "barcodeNumber": "Barcode",
   "enterAmount": "Enter amount (in g)",
   "add": "Add",
-  "language": "Language"
+  "language": "Language",
+  "at": "at",
+  "popUpTitle": "Product not found",
+  "popUpText": "Do you want to add it to the database?",
+  "popUpAnswerYes": "Yes",
+  "popUpAnswerNo": "No",
+  "search": "Search",
+  "emptyBarcodeField": "Please enter a barcode number!",
+  "shortBarcodeField": "Requires at least 2 characters!"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"de": de, "en": en};
 }

@@ -153,7 +153,7 @@ class _ProductAddPageState extends State<ProductAddPage>
                     Align(
                       alignment: Alignment(0, -0.9),
                       child: Text(
-                        LocaleKeys.add.tr() + this.barcode.text,
+                        LocaleKeys.add.tr() + " " + this.barcode.text,
                         style: FlutterFlowTheme.title1.override(
                           fontFamily: 'Poppins',
                         ),
@@ -216,7 +216,9 @@ class _ProductAddPageState extends State<ProductAddPage>
                               duration: Duration(milliseconds: 300),
                               reverseDuration: Duration(milliseconds: 300),
                               child: ProductDetailsPageWidget(
-                                  docID: await findBarcode(barcode.text), viewProduct: false,),
+                                docID: await findBarcode(barcode.text),
+                                viewProduct: false,
+                              ),
                             ),
                           );
                         },
