@@ -337,7 +337,9 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    File file = await FilePicker.getFile();
+                                    File file = await FilePicker.getFile(
+                                        type: FileType.custom,
+                                        allowedExtensions: ['txt']);
                                     await importFromFile(file);
                                     context.setLocale(
                                         await db.queryLanguage() == 1
