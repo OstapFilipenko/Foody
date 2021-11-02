@@ -297,7 +297,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 duration: Duration(milliseconds: 300),
                 reverseDuration: Duration(milliseconds: 300),
                 child: ProductAddPage(
-                  barcodeProduct: barcodeController.text,
+                  barcodeProduct: barcodeStr,
                 ),
               ),
             );
