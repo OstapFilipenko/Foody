@@ -144,6 +144,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
               double.parse(snapshot.get("sugar").toString()) *
                   element.gramm /
                   100,
+              snapshot.get("description").toString().toLowerCase() == 'true', 
             ),
           );
         });

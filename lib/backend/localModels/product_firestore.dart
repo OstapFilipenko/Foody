@@ -7,9 +7,10 @@ class ProductFirestore {
   String _name;
   double _protein;
   double _sugar;
+  bool _verified;
 
   ProductFirestore(int barcode, String name, double calories, double carbohydrates, String description, double fats,
-      double protein, double sugar) {
+      double protein, double sugar, bool verified) {
     this._barcode = barcode;
     this._name = name;
     this._calories = calories;
@@ -18,6 +19,7 @@ class ProductFirestore {
     this._fats = fats;
     this._protein = protein;
     this._sugar = sugar;
+    this._verified = verified;
   }
 
   int get barcode => _barcode;
@@ -35,6 +37,8 @@ class ProductFirestore {
   double get protein => _protein;
 
   double get sugar => _sugar;
+
+  bool get verified => _verified;
 
   @override
   String toString() {

@@ -36,6 +36,9 @@ abstract class ProductsRecord
   double get sugar;
 
   @nullable
+  bool get verified;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -47,7 +50,8 @@ abstract class ProductsRecord
     ..fats = 0.0
     ..name = ''
     ..protein = 0.0
-    ..sugar = 0.0;
+    ..sugar = 0.0
+    ..verified = true;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('products');
@@ -75,6 +79,7 @@ Map<String, dynamic> createProductsRecordData({
   String name,
   double protein,
   double sugar,
+  bool verified,
 }) =>
     serializers.toFirestore(
         ProductsRecord.serializer,
@@ -86,4 +91,5 @@ Map<String, dynamic> createProductsRecordData({
           ..fats = fats
           ..name = name
           ..protein = protein
-          ..sugar = sugar));
+          ..sugar = sugar
+          ..verified = verified));

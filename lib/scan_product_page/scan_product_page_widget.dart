@@ -206,6 +206,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                           ),
                         );
                       } else {
+                        barcodeController.text = data;
                         showDialog(
                           context: context,
                           builder: (BuildContext context) =>
@@ -297,7 +298,7 @@ class _ScanProductPageWidgetState extends State<ScanProductPageWidget>
                 duration: Duration(milliseconds: 300),
                 reverseDuration: Duration(milliseconds: 300),
                 child: ProductAddPage(
-                  barcodeProduct: barcodeStr,
+                  barcodeProduct: barcodeController.text,
                 ),
               ),
             );

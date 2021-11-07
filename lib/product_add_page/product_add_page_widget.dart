@@ -205,6 +205,7 @@ class _ProductAddPageState extends State<ProductAddPage>
                             fats: double.parse(fats.text),
                             name: name.text,
                             protein: double.parse(protein.text),
+                            verified: false
                           );
                           await ProductsRecord.collection
                               .doc()

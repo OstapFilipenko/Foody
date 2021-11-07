@@ -76,6 +76,13 @@ class _$ProductsRecordSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
+    value = object.verified;
+    if (value != null) {
+      result
+        ..add('verified')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.reference;
     if (value != null) {
       result
@@ -131,6 +138,10 @@ class _$ProductsRecordSerializer
           result.sugar = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
+        case 'verified':
+          result.verified = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
         case 'Document__Reference__Field':
           result.reference = serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -162,6 +173,8 @@ class _$ProductsRecord extends ProductsRecord {
   @override
   final double sugar;
   @override
+  final bool verified;
+  @override
   final DocumentReference<Object> reference;
 
   factory _$ProductsRecord([void Function(ProductsRecordBuilder) updates]) =>
@@ -176,6 +189,7 @@ class _$ProductsRecord extends ProductsRecord {
       this.name,
       this.protein,
       this.sugar,
+      this.verified,
       this.reference})
       : super._();
 
@@ -199,27 +213,32 @@ class _$ProductsRecord extends ProductsRecord {
         name == other.name &&
         protein == other.protein &&
         sugar == other.sugar &&
+        verified == other.verified &&
         reference == other.reference;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc($jc(0, barcode.hashCode),
-                                    calories.hashCode),
-                                carbohydrates.hashCode),
-                            description.hashCode),
-                        fats.hashCode),
-                    name.hashCode),
-                protein.hashCode),
-            sugar.hashCode),
-        reference.hashCode));
+    return $jf(
+      $jc(
+          $jc(
+              $jc(
+                  $jc(
+                      $jc(
+                          $jc(
+                              $jc(
+                                  $jc(
+                                      $jc($jc(0, barcode.hashCode),
+                                          calories.hashCode),
+                                      carbohydrates.hashCode),
+                                  description.hashCode),
+                              fats.hashCode),
+                          name.hashCode),
+                      protein.hashCode),
+                  sugar.hashCode),
+              verified.hashCode),
+          reference.hashCode),
+    );
   }
 
   @override
@@ -233,6 +252,7 @@ class _$ProductsRecord extends ProductsRecord {
           ..add('name', name)
           ..add('protein', protein)
           ..add('sugar', sugar)
+          ..add('verified', verified)
           ..add('reference', reference))
         .toString();
   }
@@ -275,6 +295,10 @@ class ProductsRecordBuilder
   double get sugar => _$this._sugar;
   set sugar(double sugar) => _$this._sugar = sugar;
 
+  bool _verified;
+  bool get verified => _$this._verified;
+  set verified(bool sugar) => _$this._verified = verified;
+
   DocumentReference<Object> _reference;
   DocumentReference<Object> get reference => _$this._reference;
   set reference(DocumentReference<Object> reference) =>
@@ -295,6 +319,7 @@ class ProductsRecordBuilder
       _name = $v.name;
       _protein = $v.protein;
       _sugar = $v.sugar;
+      _verified = $v.verified;
       _reference = $v.reference;
       _$v = null;
     }
@@ -324,6 +349,7 @@ class ProductsRecordBuilder
             name: name,
             protein: protein,
             sugar: sugar,
+            verified: verified,
             reference: reference);
     replace(_$result);
     return _$result;
